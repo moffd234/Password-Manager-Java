@@ -4,7 +4,9 @@ import com.moffd.app.Models.Credential;
 import com.moffd.app.Utils.ConnectionFactory;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CredentialsDao implements DaoInterface<Credential> {
@@ -12,6 +14,16 @@ public class CredentialsDao implements DaoInterface<Credential> {
 
     @Override
     public Credential findById(int id) {
+        try(PreparedStatement statement = connection.prepareStatement("SELECT * FROM credentials WHERE id = ?")){
+            statement.setInt(1, id);
+            try(ResultSet rs = statement.executeQuery()){
+                if(rs.next()){
+                    return recreateDTO(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error getting credential by ID " + e);
+        }
         return null;
     }
 
