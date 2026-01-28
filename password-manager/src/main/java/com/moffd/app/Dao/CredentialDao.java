@@ -3,10 +3,8 @@ package com.moffd.app.Dao;
 import com.moffd.app.Models.Credential;
 import com.moffd.app.Utils.ConnectionFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CredentialDao implements DaoInterface<Credential> {
@@ -35,7 +33,24 @@ public class CredentialDao implements DaoInterface<Credential> {
 
     @Override
     public List<Credential> findAll() {
-        return List.of();
+        ArrayList<Credential> output = new ArrayList<>();
+        String sql = "SELECT * FROM credentials";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+
+            while (rs.next()) {
+                output.add(recreateCredential(rs));
+            }
+
+            return output;
+
+        } catch (SQLException e) {
+            System.out.println("Error getting all credentials " + e);
+        }
+
+        return output;
     }
 
     @Override
