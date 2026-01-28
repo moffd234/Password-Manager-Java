@@ -10,18 +10,20 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class CredentialDao implements DaoInterface<Credential> {
-    private Connection connection = ConnectionFactory.getConnection();
 
     @Override
     public Credential findById(int id) {
-        try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM credentials WHERE id = ?")) {
+        String sql = "SELECT * FROM credentials WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
 
             try (ResultSet rs = statement.executeQuery()) {
 
                 if (rs.next()) {
-                    return recreateDTO(rs);
+                    return recreateCredential(rs);
                 }
 
             }
@@ -51,7 +53,7 @@ public class CredentialDao implements DaoInterface<Credential> {
 
     }
 
-    private Credential recreateDTO(ResultSet rs) throws SQLException {
+    private Credential recreateCredential(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         int userId = rs.getInt("user_id");
         String site = rs.getString("site");
@@ -59,5 +61,9 @@ public class CredentialDao implements DaoInterface<Credential> {
         String sitePassword = rs.getString("site_password");
 
         return new Credential(id, userId, site, siteUsername, sitePassword);
+    }
+
+    private Connection getConnection() {
+        return ConnectionFactory.getConnection();
     }
 }
