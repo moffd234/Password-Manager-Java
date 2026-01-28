@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class ConnectionFactory {
     public static Connection getConnection() {
-        final String url = "jdbc:mysql://localhost:3306/jdbcdao";
+        final String url = "jdbc:mysql://localhost:3306/PWD_MANAGER";
         final String username = "dan";
         final String password = System.getenv("DB_PWD");
 
