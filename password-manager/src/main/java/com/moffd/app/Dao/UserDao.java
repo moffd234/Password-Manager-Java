@@ -2,10 +2,7 @@ package com.moffd.app.Dao;
 
 import com.moffd.app.Models.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -91,6 +88,37 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
     @Override
     public User create(User dto) {
+        String sql = "INSERT INTO users (username, master_password, email) " +
+                "VALUES (?, ?, ?)";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, dto.getUsername());
+            statement.setString(2, dto.getMasterPassword());
+            statement.setString(3, dto.getEmail());
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                System.out.println("Error inserting user. User not inserted");
+                return null;
+            }
+
+            try (ResultSet rs = statement.getGeneratedKeys()) {
+                if (rs.next()) {
+                    dto.setId(rs.getInt(1));
+                } else {
+                    System.out.println("Error setting user ID");
+                    return null;
+                }
+            }
+
+            return dto;
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting user. " + e);
+        }
         return null;
     }
 
