@@ -42,11 +42,11 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet rs = statement.executeQuery()) {
 
-            while(rs.next()){
+            while (rs.next()) {
                 output.add(recreateUser(rs));
             }
 
-            if(output.isEmpty()){
+            if (output.isEmpty()) {
                 System.out.println("Error getting all users: No users found");
             }
 
@@ -61,6 +61,31 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
     @Override
     public User update(User dto) {
+        String sql = "UPDATE users " +
+                "SET username = ? , master_password = ?, email = ? " +
+                "WHERE id = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, dto.getUsername());
+            statement.setString(2, dto.getMasterPassword());
+            statement.setString(3, dto.getEmail());
+            statement.setInt(4, dto.getId());
+
+            int rowsUpdated = statement.executeUpdate();
+
+            if (rowsUpdated == 0) {
+                System.out.println("Error updating rows. No rows updated");
+                return null;
+            }
+
+            return dto;
+
+        } catch (SQLException e) {
+            System.out.println("Error updating user");
+        }
+
         return null;
     }
 
@@ -78,7 +103,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setInt(1, id);
             int rowsModified = statement.executeUpdate();
 
-            if(rowsModified == 0){
+            if (rowsModified == 0) {
                 System.out.println("Error deleting user. Id not found");
             }
 
