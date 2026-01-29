@@ -1,15 +1,34 @@
 package com.moffd.app.Dao;
 
-import com.moffd.app.Models.Credential;
 import com.moffd.app.Models.User;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-public class UserDao implements DaoInterface<User> {
+public class UserDao extends BaseDao implements DaoInterface<User> {
+
     @Override
     public User findById(int id) {
+        String sql = "SELECT * FROM users WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, id);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return recreateUser(rs);
+                }
+
+                System.out.println("User id not found " + id);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error finding user id " + e);
+        }
         return null;
     }
 
