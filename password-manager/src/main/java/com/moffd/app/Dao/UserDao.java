@@ -71,7 +71,20 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
     @Override
     public void delete(int id) {
+        String sql = "DELETE FROM users WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
+            statement.setInt(1, id);
+            int rowsModified = statement.executeUpdate();
+
+            if(rowsModified == 0){
+                System.out.println("Error deleting user. Id not found");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error deleting user: " + e);
+        }
     }
 
     private User recreateUser(ResultSet rs) throws SQLException {

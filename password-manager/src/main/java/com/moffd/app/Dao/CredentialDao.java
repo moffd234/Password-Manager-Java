@@ -1,7 +1,6 @@
 package com.moffd.app.Dao;
 
 import com.moffd.app.Models.Credential;
-import com.moffd.app.Utils.ConnectionFactory;
 
 import java.sql.*;
 import java.util.ArrayList;
