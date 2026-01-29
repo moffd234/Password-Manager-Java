@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CredentialDao implements DaoInterface<Credential> {
+public class CredentialDao extends BaseDao implements DaoInterface<Credential>{
 
     @Override
     public Credential findById(int id) {
@@ -145,9 +145,5 @@ public class CredentialDao implements DaoInterface<Credential> {
         String sitePassword = rs.getString("site_password");
 
         return new Credential(id, userId, site, siteUsername, sitePassword);
-    }
-
-    private Connection getConnection() {
-        return ConnectionFactory.getConnection();
     }
 }
