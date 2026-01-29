@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends BaseDao implements DaoInterface<User> {
@@ -34,7 +35,28 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
     @Override
     public List<User> findAll() {
-        return List.of();
+        ArrayList<User> output = new ArrayList<>();
+        String sql = "SELECT * FROM users";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql);
+             ResultSet rs = statement.executeQuery()) {
+
+            while(rs.next()){
+                output.add(recreateUser(rs));
+            }
+
+            if(output.isEmpty()){
+                System.out.println("Error getting all users: No users found");
+            }
+
+            return output;
+
+        } catch (SQLException e) {
+            System.out.println("Error getting all users: " + e);
+        }
+
+        return output;
     }
 
     @Override
