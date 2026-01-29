@@ -98,15 +98,15 @@ public class CredentialDao implements DaoInterface<Credential> {
 
             int linesChanged = statement.executeUpdate();
 
-            if(linesChanged == 0){
+            if (linesChanged == 0) {
                 System.out.println("Error inserting credential. No credential inserted");
                 return null;
             }
 
             ResultSet rs = statement.getGeneratedKeys();
-            if(rs.next()) {
+            if (rs.next()) {
                 dto.setId(rs.getInt(1));
-            } else{
+            } else {
                 System.out.println("Error setting credential ID");
             }
 
@@ -121,7 +121,20 @@ public class CredentialDao implements DaoInterface<Credential> {
 
     @Override
     public void delete(int id) {
+        String sql = "DELETE FROM credentials WHERE id = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
 
+            statement.setInt(1, id);
+            int rowsModified = statement.executeUpdate();
+
+            if(rowsModified == 0){
+                System.out.println("Error deleting credential. Id not found");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error deleting credential: " + e);
+        }
     }
 
     private Credential recreateCredential(ResultSet rs) throws SQLException {
