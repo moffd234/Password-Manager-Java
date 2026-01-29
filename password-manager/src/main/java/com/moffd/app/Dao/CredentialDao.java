@@ -55,6 +55,31 @@ public class CredentialDao implements DaoInterface<Credential> {
 
     @Override
     public Credential update(Credential dto) {
+        String sql = "UPDATE credentials " +
+                "SET user_id = ?, site = ?, site_username = ?, site_password = ? " +
+                "WHERE id = ?;";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, dto.getUserId());
+            statement.setString(2, dto.getSite());
+            statement.setString(3, dto.getSiteUsername());
+            statement.setString(4, dto.getSitePassword());
+            statement.setInt(5, dto.getId());
+
+            int linesChanged = statement.executeUpdate();
+
+            if(linesChanged == 0){
+                System.out.println("Error updating credential. No changes made");
+                return null;
+            }
+
+            return dto;
+
+        } catch (SQLException e) {
+            System.out.println("Error updating credential");
+        }
         return null;
     }
 
