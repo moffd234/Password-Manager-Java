@@ -70,7 +70,7 @@ public class CredentialDao implements DaoInterface<Credential> {
 
             int linesChanged = statement.executeUpdate();
 
-            if(linesChanged == 0){
+            if (linesChanged == 0) {
                 System.out.println("Error updating credential. No changes made");
                 return null;
             }
@@ -85,6 +85,37 @@ public class CredentialDao implements DaoInterface<Credential> {
 
     @Override
     public Credential create(Credential dto) {
+        String sql = "INSERT INTO credentials (user_id, site, site_username, site_password) " +
+                "VALUES (?, ?, ?, ?);";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            statement.setInt(1, dto.getUserId());
+            statement.setString(2, dto.getSite());
+            statement.setString(3, dto.getSiteUsername());
+            statement.setString(4, dto.getSitePassword());
+
+            int linesChanged = statement.executeUpdate();
+
+            if(linesChanged == 0){
+                System.out.println("Error inserting credential. No credential inserted");
+                return null;
+            }
+
+            ResultSet rs = statement.getGeneratedKeys();
+            if(rs.next()) {
+                dto.setId(rs.getInt(1));
+            } else{
+                System.out.println("Error setting credential ID");
+            }
+
+            return dto;
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting credential " + e);
+        }
+
         return null;
     }
 
