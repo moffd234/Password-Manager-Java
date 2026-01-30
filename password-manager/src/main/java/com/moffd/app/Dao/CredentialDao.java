@@ -9,7 +9,7 @@ import java.util.List;
 
 public class CredentialDao extends BaseDao implements DaoInterface<Credential>{
 
-    private IOConsole console = new IOConsole();
+    private final IOConsole console = new IOConsole();
 
     @Override
     public Credential findById(int id) {

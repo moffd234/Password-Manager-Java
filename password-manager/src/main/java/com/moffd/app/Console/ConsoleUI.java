@@ -13,7 +13,7 @@ public class ConsoleUI {
         this.ioConsole = ioConsole;
     }
 
-    private User authUser(){
+    private User authUser() {
         User user = null;
 
         while (user == null) {
@@ -22,12 +22,13 @@ public class ConsoleUI {
 
             if (loginChoice.equals("login")) {
                 user = login();
-            } else if(loginChoice.equals("signup")){
+            } else if (loginChoice.equals("signup")) {
                 user = signUp();
-            } else{
+            } else {
                 return null;
             }
         }
+
         return user;
     }
 

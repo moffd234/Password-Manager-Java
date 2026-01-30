@@ -90,7 +90,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
     }
 
     @Override
-    public User create(User dto) {
+    public User create(User dto) throws SQLException{
         String sql = "INSERT INTO users (username, master_password, email) " +
                 "VALUES (?, ?, ?)";
 
@@ -119,10 +119,11 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
             return dto;
 
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new IllegalStateException("Username already exists");
         } catch (SQLException e) {
-            console.printError("Error inserting user. " + e);
+            throw new SQLException("Database error while creating user", e);
         }
-        return null;
     }
 
     @Override
