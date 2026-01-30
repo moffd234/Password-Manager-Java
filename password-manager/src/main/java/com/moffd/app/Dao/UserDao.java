@@ -1,12 +1,15 @@
 package com.moffd.app.Dao;
 
 import com.moffd.app.Models.User;
+import com.moffd.app.Utils.IOConsole;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends BaseDao implements DaoInterface<User> {
+
+    private final IOConsole console = new IOConsole();
 
     @Override
     public User findById(int id) {
@@ -21,11 +24,11 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
                     return recreateUser(rs);
                 }
 
-                System.out.println("User id not found " + id);
+                console.printError("User id not found " + id);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error finding user id " + e);
+            console.printError("Error finding user id " + e);
         }
         return null;
     }
@@ -44,13 +47,13 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             }
 
             if (output.isEmpty()) {
-                System.out.println("Error getting all users: No users found");
+                console.printError("Error getting all users: No users found");
             }
 
             return output;
 
         } catch (SQLException e) {
-            System.out.println("Error getting all users: " + e);
+            console.printError("Error getting all users: " + e);
         }
 
         return output;
@@ -73,14 +76,14 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             int rowsUpdated = statement.executeUpdate();
 
             if (rowsUpdated == 0) {
-                System.out.println("Error updating rows. No rows updated");
+                console.printError("Error updating rows. No rows updated");
                 return null;
             }
 
             return dto;
 
         } catch (SQLException e) {
-            System.out.println("Error updating user");
+            console.printError("Error updating user");
         }
 
         return null;
@@ -101,7 +104,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             int rowsUpdated = statement.executeUpdate();
 
             if (rowsUpdated == 0) {
-                System.out.println("Error inserting user. User not inserted");
+                console.printError("Error inserting user. User not inserted");
                 return null;
             }
 
@@ -109,7 +112,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
                 if (rs.next()) {
                     dto.setId(rs.getInt(1));
                 } else {
-                    System.out.println("Error setting user ID");
+                    console.printError("Error setting user ID");
                     return null;
                 }
             }
@@ -117,7 +120,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             return dto;
 
         } catch (SQLException e) {
-            System.out.println("Error inserting user. " + e);
+            console.printError("Error inserting user. " + e);
         }
         return null;
     }
@@ -132,11 +135,11 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             int rowsModified = statement.executeUpdate();
 
             if (rowsModified == 0) {
-                System.out.println("Error deleting user. Id not found");
+                console.printError("Error deleting user. Id not found");
             }
 
         } catch (SQLException e) {
-            System.out.println("Error deleting user: " + e);
+            console.printError("Error deleting user: " + e);
         }
     }
 
