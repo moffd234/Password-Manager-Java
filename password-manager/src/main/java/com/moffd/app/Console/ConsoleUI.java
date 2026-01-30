@@ -13,4 +13,30 @@ public class ConsoleUI {
         this.ioConsole = ioConsole;
     }
 
+    private User authUser(){
+        User user = null;
+
+        while (user == null) {
+            String loginChoice = ioConsole.getValidInput("[ login ] [ signup ] [ exit ]",
+                    List.of("login", "signup", "exit"));
+
+            if (loginChoice.equals("login")) {
+                user = login();
+            } else if(loginChoice.equals("signup")){
+                user = signUp();
+            } else{
+                return null;
+            }
+        }
+        return user;
+    }
+
+    private User login() {
+        return null;
+    }
+
+    private User signUp() {
+        return null;
+    }
+
 }
