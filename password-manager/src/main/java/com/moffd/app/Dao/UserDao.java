@@ -33,6 +33,20 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
         return null;
     }
 
+    public User findByUsername(String username) throws SQLException {
+        String sql = "SELECT * FROM users WHERE username = ?";
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+
+            try(ResultSet rs = statement.executeQuery()) {
+
+                return rs.next() ? recreateUser(rs) : null;
+            }
+        }
+    }
+
     @Override
     public List<User> findAll() {
         ArrayList<User> output = new ArrayList<>();
@@ -90,7 +104,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
     }
 
     @Override
-    public User create(User dto) throws SQLException{
+    public User create(User dto) throws SQLException {
         String sql = "INSERT INTO users (username, master_password, email) " +
                 "VALUES (?, ?, ?)";
 
