@@ -6,7 +6,7 @@ import java.util.List;
 public interface DaoInterface<T> {
     public T findById(int id) throws SQLException;
 
-    public List<T> findAll();
+    public List<T> findAll() throws SQLException;
 
     public T update(T dto);
 

@@ -33,14 +33,13 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setString(1, username);
 
             try (ResultSet rs = statement.executeQuery()) {
-
                 return rs.next() ? recreateUser(rs) : null;
             }
         }
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll() throws SQLException {
         ArrayList<User> output = new ArrayList<>();
         String sql = "SELECT * FROM users";
 
@@ -52,17 +51,8 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
                 output.add(recreateUser(rs));
             }
 
-            if (output.isEmpty()) {
-                console.printError("Error getting all users: No users found");
-            }
-
             return output;
-
-        } catch (SQLException e) {
-            console.printError("Error getting all users: " + e);
         }
-
-        return output;
     }
 
     @Override
