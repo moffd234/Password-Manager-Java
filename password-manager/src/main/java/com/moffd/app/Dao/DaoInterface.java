@@ -12,5 +12,5 @@ public interface DaoInterface<T> {
 
     public T create(T dto) throws SQLException;
 
-    public void delete(int id);
+    public void delete(int id) throws SQLException;
 }
