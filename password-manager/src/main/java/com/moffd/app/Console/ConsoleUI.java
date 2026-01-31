@@ -51,7 +51,7 @@ public class ConsoleUI {
      * @param password The string to check
      * @return null if valid. Otherwise, returns a description of why its invalid
      */
-    private String validatePassword(String password) {
+    public String validatePassword(String password) {
         if (password.length() < 26) {
             return "Password must be at least 26 characters long.";
         }
@@ -76,7 +76,7 @@ public class ConsoleUI {
      * @param email string to check for valid email format
      * @return null if valid. Otherwise, returns a description of why its invalid
      */
-    private String validateEmail(String email) {
+    public String validateEmail(String email) {
         if (email == null || email.isEmpty()) {
             return "Email cannot be empty";
         }
