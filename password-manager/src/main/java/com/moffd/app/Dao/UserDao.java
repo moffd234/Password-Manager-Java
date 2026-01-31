@@ -12,7 +12,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
     private final IOConsole console = new IOConsole();
 
     @Override
-    public User findById(int id) {
+    public User findById(int id) throws SQLException {
         String sql = "SELECT * FROM users WHERE id = ?";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -20,17 +20,9 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setInt(1, id);
 
             try (ResultSet rs = statement.executeQuery()) {
-                if (rs.next()) {
-                    return recreateUser(rs);
-                }
-
-                console.printError("User id not found " + id);
+                return rs.next() ? recreateUser(rs) : null;
             }
-
-        } catch (SQLException e) {
-            console.printError("Error finding user id " + e);
         }
-        return null;
     }
 
     public User findByUsername(String username) throws SQLException {
@@ -40,7 +32,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
             statement.setString(1, username);
 
-            try(ResultSet rs = statement.executeQuery()) {
+            try (ResultSet rs = statement.executeQuery()) {
 
                 return rs.next() ? recreateUser(rs) : null;
             }
