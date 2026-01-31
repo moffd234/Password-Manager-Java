@@ -56,7 +56,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
     }
 
     @Override
-    public User update(User dto) {
+    public User update(User dto) throws SQLException {
         String sql = "UPDATE users " +
                 "SET username = ? , master_password = ?, email = ? " +
                 "WHERE id = ?";
@@ -71,18 +71,8 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
             int rowsUpdated = statement.executeUpdate();
 
-            if (rowsUpdated == 0) {
-                console.printError("Error updating rows. No rows updated");
-                return null;
-            }
-
-            return dto;
-
-        } catch (SQLException e) {
-            console.printError("Error updating user");
+            return rowsUpdated != 0 ? dto : null;
         }
-
-        return null;
     }
 
     @Override

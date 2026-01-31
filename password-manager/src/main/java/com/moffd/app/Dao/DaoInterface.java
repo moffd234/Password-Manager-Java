@@ -8,7 +8,7 @@ public interface DaoInterface<T> {
 
     public List<T> findAll() throws SQLException;
 
-    public T update(T dto);
+    public T update(T dto) throws SQLException;
 
     public T create(T dto) throws SQLException;
 
