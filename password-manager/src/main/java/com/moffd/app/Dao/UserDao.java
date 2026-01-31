@@ -90,7 +90,6 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             int rowsUpdated = statement.executeUpdate();
 
             if (rowsUpdated == 0) {
-                console.printError("Error inserting user. User not inserted");
                 return null;
             }
 
@@ -98,17 +97,11 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
                 if (rs.next()) {
                     dto.setId(rs.getInt(1));
                 } else {
-                    console.printError("Error setting user ID");
                     return null;
                 }
             }
 
             return dto;
-
-        } catch (SQLIntegrityConstraintViolationException e) {
-            throw new IllegalStateException("Username already exists");
-        } catch (SQLException e) {
-            throw new SQLException("Database error while creating user", e);
         }
     }
 
