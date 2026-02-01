@@ -9,11 +9,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 
-public class ConsoleUI {
+public class AuthConsole {
     private final IOConsole ioConsole;
     private final UserDao userDao = new UserDao();
 
-    public ConsoleUI(IOConsole ioConsole) {
+    public AuthConsole(IOConsole ioConsole) {
         this.ioConsole = ioConsole;
     }
 

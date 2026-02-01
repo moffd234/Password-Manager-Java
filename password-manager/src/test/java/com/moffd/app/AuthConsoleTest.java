@@ -1,18 +1,18 @@
 package com.moffd.app;
 
-import com.moffd.app.Console.ConsoleUI;
+import com.moffd.app.Console.AuthConsole;
 import com.moffd.app.Utils.IOConsole;
 import org.junit.Before;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class ConsoleUITest {
-    private ConsoleUI consoleUI;
+public class AuthConsoleTest {
+    private AuthConsole authConsole;
 
     @Before
     public void setup(){
-        consoleUI = new ConsoleUI(new IOConsole());
+        authConsole = new AuthConsole(new IOConsole());
     }
 
     @Test
@@ -40,7 +40,7 @@ public class ConsoleUITest {
     }
 
     private void checkIfEmailIsValid(String email){
-        String actual = consoleUI.validateEmail(email);
+        String actual = authConsole.validateEmail(email);
 
         assertNull(actual);
     }
