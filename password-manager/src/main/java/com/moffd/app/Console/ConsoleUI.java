@@ -83,7 +83,7 @@ public class ConsoleUI {
         }
 
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
-        return email.matches(regex) ? "Email is not a valid format" : null;
+        return !email.matches(regex) ? "Email is not a valid format" : null;
     }
 
     private String hashPassword(String password){
