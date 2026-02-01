@@ -102,9 +102,9 @@ public class ConsoleUI {
     private String getValidUsername() {
         String username = ioConsole.getStringInput("Please create a username").trim();
 
-        try{
+        try {
 
-            while(userDao.findByUsername(username) != null || username.trim().isEmpty()){
+            while (userDao.findByUsername(username) != null || username.trim().isEmpty()) {
                 ioConsole.printError("Username already taken");
                 username = ioConsole.getStringInput("Please create a username");
             }
@@ -115,6 +115,35 @@ public class ConsoleUI {
         }
 
         return username;
+    }
+
+    private String getValidPassword() {
+        while (true) {
+            String password = ioConsole.getStringInput("Please create a password ");
+
+            if (password.equalsIgnoreCase("back")) {
+                return null;
+            }
+
+            String message = validatePassword(password);
+
+            if (message != null) {
+                ioConsole.printError(message);
+            }
+
+            String confirmation = ioConsole.getStringInput("Confirm your password");
+
+            if(confirmation.equalsIgnoreCase("back")){
+                return null;
+            }
+
+            if(!confirmation.equals(password)){
+                ioConsole.printError("Passwords do not match");
+                continue;
+            }
+
+            return password;
+        }
     }
 
 }
