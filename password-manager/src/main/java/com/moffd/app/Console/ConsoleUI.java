@@ -3,6 +3,7 @@ package com.moffd.app.Console;
 import com.moffd.app.Dao.UserDao;
 import com.moffd.app.Models.User;
 import com.moffd.app.Utils.IOConsole;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
@@ -83,6 +84,14 @@ public class ConsoleUI {
 
         String regex = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
         return email.matches(regex) ? "Email is not a valid format" : null;
+    }
+
+    private String hashPassword(String password){
+        int logRounds = 12;
+
+        String salt = BCrypt.gensalt(logRounds);
+
+        return BCrypt.hashpw(password, salt);
     }
 
 }
