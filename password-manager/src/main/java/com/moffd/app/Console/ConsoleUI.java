@@ -94,4 +94,8 @@ public class ConsoleUI {
         return BCrypt.hashpw(password, salt);
     }
 
+    private boolean checkPassword(String enteredPwd, String hashedPwd){
+        return BCrypt.checkpw(enteredPwd, hashedPwd);
+    }
+
 }
