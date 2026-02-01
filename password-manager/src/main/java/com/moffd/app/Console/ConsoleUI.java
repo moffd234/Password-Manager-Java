@@ -129,15 +129,16 @@ public class ConsoleUI {
 
             if (message != null) {
                 ioConsole.printError(message);
+                continue;
             }
 
             String confirmation = ioConsole.getStringInput("Confirm your password");
 
-            if(confirmation.equalsIgnoreCase("back")){
+            if (confirmation.equalsIgnoreCase("back")) {
                 return null;
             }
 
-            if(!confirmation.equals(password)){
+            if (!confirmation.equals(password)) {
                 ioConsole.printError("Passwords do not match");
                 continue;
             }
@@ -148,20 +149,20 @@ public class ConsoleUI {
 
     private String getValidEmail() {
         while (true) {
-            String password = ioConsole.getStringInput("Please create an email ");
+            String email = ioConsole.getStringInput("Please create an email ").trim();
 
-            if (password.equalsIgnoreCase("back")) {
+            if (email.equalsIgnoreCase("back")) {
                 return null;
             }
 
-            String message = validateEmail(password);
+            String message = validateEmail(email);
 
             if (message != null) {
                 ioConsole.printError(message);
                 continue;
             }
 
-            return password;
+            return email;
         }
     }
 
