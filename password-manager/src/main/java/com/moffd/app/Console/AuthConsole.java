@@ -191,9 +191,9 @@ public class AuthConsole {
         }
     }
 
-    private String requireField(String input) {
+    private String requireField(String input) throws CancellationException {
 
-        if (input == null) {
+        if (input == null || input.equalsIgnoreCase("back")) {
             throw new CancellationException();
         }
 
