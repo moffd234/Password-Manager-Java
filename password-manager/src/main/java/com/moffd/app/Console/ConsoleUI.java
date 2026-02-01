@@ -100,21 +100,30 @@ public class ConsoleUI {
     }
 
     private String getValidUsername() {
-        String username = ioConsole.getStringInput("Please create a username").trim();
+        while (true) {
+            String username = ioConsole.getStringInput("Please create a username").trim();
 
-        try {
-
-            while (userDao.findByUsername(username) != null || username.trim().isEmpty()) {
-                ioConsole.printError("Username already taken");
-                username = ioConsole.getStringInput("Please create a username");
+            if(username.equalsIgnoreCase("back")){
+                return null;
             }
 
-        } catch (SQLException e) {
-            ioConsole.printError("Issue creating username. Please try again later");
-            return null;
-        }
+            if(username.isEmpty()){
+                ioConsole.printError("Username cannot be empty");
+                continue;
+            }
 
-        return username;
+            try{
+                if(userDao.findByUsername(username) == null){
+                    return username;
+                }
+
+                ioConsole.printError("Username is already taken");
+
+            } catch (SQLException e) {
+                ioConsole.printError("Issue creating username. Please try again late");
+                return null;
+            }
+        }
     }
 
     private String getValidPassword() {
