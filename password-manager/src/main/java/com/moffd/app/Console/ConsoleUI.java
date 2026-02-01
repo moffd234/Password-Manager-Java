@@ -41,32 +41,21 @@ public class ConsoleUI {
     }
 
     private User signUp() {
-        String username = getValidUsername();
-
-        if (username == null) {
-            return null;
-        }
-
-        String password = getValidPassword();
-
-        if (password == null) {
-            return null;
-        }
-
-        String email = getValidEmail();
-
-        if (email == null) {
-            return null;
-        }
 
         try {
+            String username = requireField(getValidUsername());
+            String password = requireField(getValidPassword());
+            String email = requireField(getValidEmail());
 
             String hashedPassword = hashPassword(password);
-            User tempUser = new User(0, username, password, email);
+            User tempUser = new User(0, username, hashedPassword, email);
+
             return userDao.create(tempUser);
 
+        } catch (CancellationException e) {
+            return null;
         } catch (SQLException e) {
-            ioConsole.printError("Issue creating new user." + e);
+            ioConsole.printError("Issue creating new user.");
             return null;
         }
     }
@@ -210,5 +199,4 @@ public class ConsoleUI {
 
         return input;
     }
-
 }
