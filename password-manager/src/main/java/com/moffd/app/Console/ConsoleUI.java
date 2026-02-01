@@ -5,6 +5,7 @@ import com.moffd.app.Models.User;
 import com.moffd.app.Utils.IOConsole;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class ConsoleUI {
@@ -86,7 +87,7 @@ public class ConsoleUI {
         return !email.matches(regex) ? "Email is not a valid format" : null;
     }
 
-    private String hashPassword(String password){
+    private String hashPassword(String password) {
         int logRounds = 12;
 
         String salt = BCrypt.gensalt(logRounds);
@@ -94,8 +95,26 @@ public class ConsoleUI {
         return BCrypt.hashpw(password, salt);
     }
 
-    private boolean checkPassword(String enteredPwd, String hashedPwd){
+    private boolean checkPassword(String enteredPwd, String hashedPwd) {
         return BCrypt.checkpw(enteredPwd, hashedPwd);
+    }
+
+    private String getValidUsername() {
+        String username = ioConsole.getStringInput("Please create a username").trim();
+
+        try{
+
+            while(userDao.findByUsername(username) != null || username.trim().isEmpty()){
+                ioConsole.printError("Username already taken");
+                username = ioConsole.getStringInput("Please create a username");
+            }
+
+        } catch (SQLException e) {
+            ioConsole.printError("Issue creating username. Please try again later");
+            return null;
+        }
+
+        return username;
     }
 
 }
