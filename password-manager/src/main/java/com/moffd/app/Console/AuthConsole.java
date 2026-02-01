@@ -38,10 +38,10 @@ public class AuthConsole {
 
     private User login() {
         for(int i = 0; i < 5; i++) {
+
             try {
                 String username = requireField(ioConsole.getStringInput("Please enter your username").trim());
                 String password = requireField(ioConsole.getStringInput("Please enter your password"));
-
 
                 User userAccount = userDao.findByUsername(username);
 
@@ -96,18 +96,23 @@ public class AuthConsole {
         if (password.length() < 26) {
             return "Password must be at least 26 characters long.";
         }
+
         if (!password.matches(".*[A-Z].*")) {
             return "Password must contain at least one uppercase letter.";
         }
+
         if (!password.matches(".*[a-z].*")) {
             return "Password must contain at least one lowercase letter.";
         }
+
         if (!password.matches(".*\\d.*")) {
             return "Password must contain at least one digit.";
         }
+
         if (!password.matches(".*[@#$%^&+=!].*")) {
             return "Password must contain at least one special character (@#$%^&+=!).";
         }
+
         return null;
     }
 
