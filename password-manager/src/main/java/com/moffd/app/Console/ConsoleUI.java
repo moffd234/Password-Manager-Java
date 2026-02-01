@@ -41,7 +41,34 @@ public class ConsoleUI {
     }
 
     private User signUp() {
-        return null;
+        String username = getValidUsername();
+
+        if (username == null) {
+            return null;
+        }
+
+        String password = getValidPassword();
+
+        if (password == null) {
+            return null;
+        }
+
+        String email = getValidEmail();
+
+        if (email == null) {
+            return null;
+        }
+
+        try {
+
+            String hashedPassword = hashPassword(password);
+            User tempUser = new User(0, username, password, email);
+            return userDao.create(tempUser);
+
+        } catch (SQLException e) {
+            ioConsole.printError("Issue creating new user." + e);
+            return null;
+        }
     }
 
     /**
@@ -103,17 +130,17 @@ public class ConsoleUI {
         while (true) {
             String username = ioConsole.getStringInput("Please create a username").trim();
 
-            if(username.equalsIgnoreCase("back")){
+            if (username.equalsIgnoreCase("back")) {
                 return null;
             }
 
-            if(username.isEmpty()){
+            if (username.isEmpty()) {
                 ioConsole.printError("Username cannot be empty");
                 continue;
             }
 
-            try{
-                if(userDao.findByUsername(username) == null){
+            try {
+                if (userDao.findByUsername(username) == null) {
                     return username;
                 }
 
