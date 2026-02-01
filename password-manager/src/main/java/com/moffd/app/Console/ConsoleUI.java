@@ -7,10 +7,10 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.concurrent.CancellationException;
 
 public class ConsoleUI {
     private final IOConsole ioConsole;
-    private User currentUser;
     private final UserDao userDao = new UserDao();
 
     public ConsoleUI(IOConsole ioConsole) {
@@ -200,6 +200,15 @@ public class ConsoleUI {
 
             return email;
         }
+    }
+
+    private String requireField(String input) {
+
+        if (input == null) {
+            throw new CancellationException();
+        }
+
+        return input;
     }
 
 }
