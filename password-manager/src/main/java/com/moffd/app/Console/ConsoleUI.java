@@ -146,4 +146,23 @@ public class ConsoleUI {
         }
     }
 
+    private String getValidEmail() {
+        while (true) {
+            String password = ioConsole.getStringInput("Please create an email ");
+
+            if (password.equalsIgnoreCase("back")) {
+                return null;
+            }
+
+            String message = validateEmail(password);
+
+            if (message != null) {
+                ioConsole.printError(message);
+                continue;
+            }
+
+            return password;
+        }
+    }
+
 }
