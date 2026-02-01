@@ -37,6 +37,29 @@ public class AuthConsole {
     }
 
     private User login() {
+        for(int i = 0; i < 5; i++) {
+            try {
+                String username = requireField(ioConsole.getStringInput("Please enter your username").trim());
+                String password = requireField(ioConsole.getStringInput("Please enter your password"));
+
+
+                User userAccount = userDao.findByUsername(username);
+
+                if (userAccount == null || !checkPassword(password, userAccount.getMasterPassword())) {
+                    ioConsole.printError("Incorrect username or password");
+                    continue;
+                }
+
+                return userAccount;
+
+            } catch (CancellationException e) {
+                return null;
+            } catch (SQLException e) {
+                ioConsole.printError("Error finding account with that username please try again");
+            }
+        }
+
+        ioConsole.printError("Too many login attempts please try again later.");
         return null;
     }
 
