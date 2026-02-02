@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.CancellationException;
 
 import static com.moffd.app.Utils.InputValidator.*;
+import static java.lang.System.exit;
 
 public class AuthConsole {
     private final IOConsole ioConsole;
@@ -19,7 +20,7 @@ public class AuthConsole {
         this.ioConsole = ioConsole;
     }
 
-    private User authUser() {
+    public User authenticate() {
         User user = null;
 
         while (user == null) {
@@ -31,7 +32,7 @@ public class AuthConsole {
             } else if (loginChoice.equals("signup")) {
                 user = signUp();
             } else {
-                return null;
+                exit(0);
             }
         }
 
