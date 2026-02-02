@@ -18,23 +18,23 @@ public class IOConsole {
     }
 
     public void print(String prompt) {
-        output.format(color.getColor() + prompt);
+        output.print(color.getColor() + prompt);
     }
 
     public void printColored(String prompt, AnsiColor color) {
-        output.format(color.getColor() + prompt);
+        output.print(color.getColor() + prompt);
     }
 
     public void println(String prompt) {
-        output.format(color.getColor() + prompt + "\n");
+        output.println(color.getColor() + prompt + "\n");
     }
 
     public void printlnColored(String prompt, AnsiColor color) {
-        output.format(color.getColor() + prompt + "\n" + AnsiColor.AUTO.getColor());
+        output.println(color.getColor() + prompt + "\n" + AnsiColor.AUTO.getColor());
     }
 
     public void printError(String prompt) {
-        output.format(AnsiColor.RED.getColor() + prompt + "\n");
+        output.println(AnsiColor.RED.getColor() + prompt + "\n");
     }
 
     public String getStringInput(String prompt) {

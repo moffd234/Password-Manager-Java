@@ -19,18 +19,9 @@ public class MenuConsole {
                 List.of("credentials", "account", "logout"));
 
         switch (choice) {
-            case "credentials":
-                new CredentialConsole(currentUser, console).run();
-                break;
-
-            case "account":
-                new AccountConsole(currentUser, console).run();
-                break;
-
-            case "logout":
-                console.printError("logging out...");
-                return;
-
+            case "credentials" -> new CredentialConsole(currentUser, console).run();
+            case "account" -> new AccountConsole(currentUser, console).run();
+            case "logout" -> {return;}
         }
     }
 }
