@@ -5,6 +5,7 @@ import com.moffd.app.Utils.IOConsole;
 import org.junit.Before;
 import org.junit.Test;
 
+import static com.moffd.app.Utils.InputValidator.validateEmail;
 import static org.junit.Assert.*;
 
 public class AuthConsoleTest {
@@ -40,7 +41,7 @@ public class AuthConsoleTest {
     }
 
     private void checkIfEmailIsValid(String email){
-        String actual = authConsole.validateEmail(email);
+        String actual = validateEmail(email);
 
         assertNull(actual);
     }
