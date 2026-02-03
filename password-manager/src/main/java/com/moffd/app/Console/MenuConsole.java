@@ -21,7 +21,9 @@ public class MenuConsole {
         switch (choice) {
             case "credentials" -> new CredentialConsole(currentUser, console).run();
             case "account" -> new AccountConsole(currentUser, console).run();
-            case "logout" -> {return;}
+            case "logout" -> {
+                return;
+            }
         }
     }
 }

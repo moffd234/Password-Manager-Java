@@ -12,5 +12,6 @@ public class AccountConsole {
         this.console = console;
     }
 
-    public void run(){}
+    public void run() {
+    }
 }

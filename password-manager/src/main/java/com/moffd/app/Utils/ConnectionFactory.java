@@ -15,7 +15,7 @@ public class ConnectionFactory {
             return null;
         }
 
-        try{
+        try {
             return DriverManager.getConnection(url, username, password);
         } catch (SQLException e) {
             System.out.println("Error creating db connection " + e);
