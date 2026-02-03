@@ -13,7 +13,7 @@ public class App {
         IOConsole console = new IOConsole();
         AuthConsole authConsole = new AuthConsole(console);
 
-        while(true) {
+        while (true) {
             User user = authConsole.authenticate();
 
             if (user != null) {

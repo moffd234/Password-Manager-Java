@@ -9,7 +9,8 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 
-import static com.moffd.app.Utils.InputValidator.*;
+import static com.moffd.app.Utils.InputValidator.validateEmail;
+import static com.moffd.app.Utils.InputValidator.validatePassword;
 import static java.lang.System.exit;
 
 public class AuthConsole {
@@ -40,7 +41,7 @@ public class AuthConsole {
     }
 
     private User login() {
-        for(int i = 0; i < 5; i++) {
+        for (int i = 0; i < 5; i++) {
 
             try {
                 String username = requireField(ioConsole.getStringInput("Please enter your username").trim());

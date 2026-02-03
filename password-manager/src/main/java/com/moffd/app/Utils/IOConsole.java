@@ -81,10 +81,10 @@ public class IOConsole {
         }
     }
 
-    public String getValidInput(String prompt, List<String> validOptions){
+    public String getValidInput(String prompt, List<String> validOptions) {
         String input = getStringInput(prompt).toLowerCase().trim();
 
-        while(!validOptions.contains(input)){
+        while (!validOptions.contains(input)) {
             printError("Invalid option. Valid options are: " + validOptions);
             input = getStringInput(prompt).toLowerCase().trim();
         }

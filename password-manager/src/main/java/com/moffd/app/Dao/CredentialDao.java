@@ -7,7 +7,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CredentialDao extends BaseDao implements DaoInterface<Credential>{
+public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
     private final IOConsole console = new IOConsole();
 
@@ -130,7 +130,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential>{
             statement.setInt(1, id);
             int rowsModified = statement.executeUpdate();
 
-            if(rowsModified == 0){
+            if (rowsModified == 0) {
                 console.printError("Error deleting credential. Id not found");
             }
 
