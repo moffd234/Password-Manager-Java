@@ -1,6 +1,7 @@
 package com.moffd.app.Dao;
 
 import com.moffd.app.Models.Credential;
+import com.moffd.app.Models.User;
 import com.moffd.app.Utils.IOConsole;
 
 import java.sql.*;
@@ -50,6 +51,28 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
         } catch (SQLException e) {
             console.printError("Error getting all credentials " + e);
+        }
+
+        return output;
+    }
+
+    public List<Credential> findAllForUser(User user) throws SQLException {
+        List<Credential> output = new ArrayList<>();
+        String sql = "SELECT * FROM credentials WHERE user_id = ? ORDER BY site";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, user.getId());
+
+            try (ResultSet rs = statement.executeQuery();) {
+
+                while (rs.next()) {
+                    output.add(recreateCredential(rs));
+                }
+
+            }
+
         }
 
         return output;
