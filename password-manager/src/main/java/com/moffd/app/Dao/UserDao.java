@@ -1,15 +1,12 @@
 package com.moffd.app.Dao;
 
 import com.moffd.app.Models.User;
-import com.moffd.app.Utils.IOConsole;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDao extends BaseDao implements DaoInterface<User> {
-
-    private final IOConsole console = new IOConsole();
 
     @Override
     public User findById(int id) throws SQLException {
