@@ -76,7 +76,9 @@ public class AuthConsole {
             String email = requireField(getValidEmail());
 
             String hashedPassword = hashPassword(password);
-            User tempUser = new User(0, username, hashedPassword, email);
+            byte[] salt = getSalt();
+
+            User tempUser = new User(0, username, hashedPassword, email, salt);
 
             return userDao.create(tempUser);
 
