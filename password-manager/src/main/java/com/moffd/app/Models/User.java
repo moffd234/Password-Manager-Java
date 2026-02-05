@@ -5,9 +5,9 @@ public class User {
     private String username;
     private String masterPassword;
     private String email;
-    private String salt;
+    private byte[] salt;
 
-    public User(int id, String username, String masterPassword, String email, String salt) {
+    public User(int id, String username, String masterPassword, String email, byte[] salt) {
         this.id = id;
         this.username = username;
         this.masterPassword = masterPassword;
