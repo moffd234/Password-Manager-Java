@@ -2,7 +2,6 @@ package com.moffd.app.Console;
 
 import com.moffd.app.Dao.UserDao;
 import com.moffd.app.Models.User;
-import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 import org.mindrot.jbcrypt.BCrypt;
 

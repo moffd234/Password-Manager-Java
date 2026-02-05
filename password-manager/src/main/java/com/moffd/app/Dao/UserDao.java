@@ -118,8 +118,9 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
         String username = rs.getString("username");
         String masterPassword = rs.getString("master_password");
         String email = rs.getString("email");
+        String salt = rs.getString("encryption_salt");
 
-        return new User(id, username, masterPassword, email);
+        return new User(id, username, masterPassword, email, salt);
     }
 
 }
