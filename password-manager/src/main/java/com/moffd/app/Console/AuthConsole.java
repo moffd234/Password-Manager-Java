@@ -2,9 +2,11 @@ package com.moffd.app.Console;
 
 import com.moffd.app.Dao.UserDao;
 import com.moffd.app.Models.User;
+import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 import org.mindrot.jbcrypt.BCrypt;
 
+import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -183,4 +185,11 @@ public class AuthConsole {
 
         return input;
     }
+
+    private byte[] getSalt(){
+        byte[] salt = new byte[16];
+        new SecureRandom().nextBytes(salt);
+        return(salt);
+    }
+
 }
