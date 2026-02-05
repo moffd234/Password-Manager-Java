@@ -5,7 +5,14 @@ import com.moffd.app.Models.User;
 import com.moffd.app.Utils.IOConsole;
 import org.mindrot.jbcrypt.BCrypt;
 
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -187,10 +194,19 @@ public class AuthConsole {
         return input;
     }
 
-    private byte[] getSalt(){
+    private byte[] getSalt() {
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
-        return(salt);
+        return (salt);
+    }
+
+    private static SecretKey getKeyFromPassword(String password, String salt)
+            throws NoSuchAlgorithmException, InvalidKeySpecException {
+
+        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
+
+        return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
     }
 
 }
