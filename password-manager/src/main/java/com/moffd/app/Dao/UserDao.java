@@ -64,7 +64,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setString(1, dto.getUsername());
             statement.setString(2, dto.getMasterPassword());
             statement.setString(3, dto.getEmail());
-            statement.setString(4, dto.getSalt());
+            statement.setBytes(4, dto.getSalt());
             statement.setInt(5, dto.getId());
 
             int rowsUpdated = statement.executeUpdate();
@@ -84,7 +84,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setString(1, dto.getUsername());
             statement.setString(2, dto.getMasterPassword());
             statement.setString(3, dto.getEmail());
-            statement.setString(4, dto.getSalt());
+            statement.setBytes(4, dto.getSalt());
 
             int rowsUpdated = statement.executeUpdate();
 
@@ -120,7 +120,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
         String username = rs.getString("username");
         String masterPassword = rs.getString("master_password");
         String email = rs.getString("email");
-        String salt = rs.getString("encryption_salt");
+        byte[] salt = rs.getBytes("encryption_salt");
 
         return new User(id, username, masterPassword, email, salt);
     }
