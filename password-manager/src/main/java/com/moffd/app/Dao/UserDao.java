@@ -55,7 +55,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
     @Override
     public User update(User dto) throws SQLException {
         String sql = "UPDATE users " +
-                "SET username = ? , master_password = ?, email = ? " +
+                "SET username = ? , master_password = ?, email = ?, encryption_salt " +
                 "WHERE id = ?";
 
         try (Connection connection = getConnection();
@@ -64,7 +64,8 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setString(1, dto.getUsername());
             statement.setString(2, dto.getMasterPassword());
             statement.setString(3, dto.getEmail());
-            statement.setInt(4, dto.getId());
+            statement.setString(4, dto.getSalt());
+            statement.setInt(5, dto.getId());
 
             int rowsUpdated = statement.executeUpdate();
 
