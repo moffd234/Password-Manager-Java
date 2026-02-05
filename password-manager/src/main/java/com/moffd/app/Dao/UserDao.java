@@ -74,8 +74,8 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
 
     @Override
     public User create(User dto) throws SQLException {
-        String sql = "INSERT INTO users (username, master_password, email) " +
-                "VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (username, master_password, email, encryption_salt) " +
+                "VALUES (?, ?, ?, ?)";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -83,6 +83,7 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
             statement.setString(1, dto.getUsername());
             statement.setString(2, dto.getMasterPassword());
             statement.setString(3, dto.getEmail());
+            statement.setString(4, dto.getSalt());
 
             int rowsUpdated = statement.executeUpdate();
 
