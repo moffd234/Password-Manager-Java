@@ -81,7 +81,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
     @Override
     public Credential update(Credential dto) {
         String sql = "UPDATE credentials " +
-                "SET user_id = ?, site = ?, site_username = ?, site_password = ? " +
+                "SET user_id = ?, site = ?, site_username = ?, site_password = ?, iv = ? " +
                 "WHERE id = ?;";
 
         try (Connection connection = getConnection();
@@ -91,7 +91,8 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             statement.setString(2, dto.getSite());
             statement.setString(3, dto.getSiteUsername());
             statement.setString(4, dto.getSitePassword());
-            statement.setInt(5, dto.getId());
+            statement.setBytes(5, dto.getIv());
+            statement.setInt(6, dto.getId());
 
             int linesChanged = statement.executeUpdate();
 
@@ -110,8 +111,8 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
     @Override
     public Credential create(Credential dto) {
-        String sql = "INSERT INTO credentials (user_id, site, site_username, site_password) " +
-                "VALUES (?, ?, ?, ?);";
+        String sql = "INSERT INTO credentials (user_id, site, site_username, site_password, iv) " +
+                "VALUES (?, ?, ?, ?, ?);";
 
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -120,6 +121,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             statement.setString(2, dto.getSite());
             statement.setString(3, dto.getSiteUsername());
             statement.setString(4, dto.getSitePassword());
+            statement.setBytes(5, dto.getIv());
 
             int linesChanged = statement.executeUpdate();
 
