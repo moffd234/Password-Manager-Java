@@ -30,23 +30,23 @@ public class AuthConsole {
         this.ioConsole = ioConsole;
     }
 
-    public Users authenticate() {
-        User user = null;
+    public UserSession authenticate() {
+        UserSession session = null;
 
-        while (user == null) {
+        while (session == null) {
             String loginChoice = ioConsole.getValidInput("[ login ] [ signup ] [ exit ]",
                     List.of("login", "signup", "exit"));
 
             if (loginChoice.equals("login")) {
-                user = login();
+                session = login();
             } else if (loginChoice.equals("signup")) {
-                user = signUp();
+                session = signUp();
             } else {
                 exit(0);
             }
         }
 
-        return user;
+        return session;
     }
 
     private UserSession login() {
@@ -65,7 +65,7 @@ public class AuthConsole {
 
                 return new UserSession(userAccount, getKeyFromPassword(password, userAccount.getSalt()));
 
-            } catch (CancellationException) {
+            } catch (CancellationException e) {
                 return null;
             } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
                 ioConsole.printError("Error finding account with that username please try again");
