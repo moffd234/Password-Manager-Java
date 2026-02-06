@@ -2,6 +2,7 @@ package com.moffd.app.Console;
 
 import com.moffd.app.Dao.UserDao;
 import com.moffd.app.Models.User;
+import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -75,7 +76,7 @@ public class AuthConsole {
         return null;
     }
 
-    private User signUp() {
+    private UserSession signUp() {
 
         try {
             String username = requireField(getValidUsername());
@@ -87,11 +88,11 @@ public class AuthConsole {
 
             User tempUser = new User(0, username, hashedPassword, email, salt);
 
-            return userDao.create(tempUser);
+            return new UserSession(userDao.create(tempUser), getKeyFromPassword(password, salt));
 
         } catch (CancellationException e) {
             return null;
-        } catch (SQLException e) {
+        } catch (SQLException | NoSuchAlgorithmException | InvalidKeySpecException e) {
             ioConsole.printError("Issue creating new user.");
             return null;
         }
