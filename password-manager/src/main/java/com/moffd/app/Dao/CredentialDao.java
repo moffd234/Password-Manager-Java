@@ -2,7 +2,6 @@ package com.moffd.app.Dao;
 
 import com.moffd.app.Models.Credential;
 import com.moffd.app.Models.User;
-import com.moffd.app.Utils.IOConsole;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,7 +10,7 @@ import java.util.List;
 public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
     @Override
-    public Credential findById(int id) {
+    public Credential findById(int id) throws SQLException {
         String sql = "SELECT * FROM credentials WHERE id = ?";
 
         try (Connection connection = getConnection();
@@ -26,14 +25,13 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
                 }
 
             }
-        } catch (SQLException e) {
-            return null;
         }
+
         return null;
     }
 
     @Override
-    public List<Credential> findAll() {
+    public List<Credential> findAll() throws SQLException {
         ArrayList<Credential> output = new ArrayList<>();
         String sql = "SELECT * FROM credentials";
 
@@ -45,9 +43,6 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
                 output.add(recreateCredential(rs));
             }
 
-            return output;
-
-        } catch (SQLException e) {
             return output;
         }
     }
@@ -75,7 +70,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
     }
 
     @Override
-    public Credential update(Credential dto) {
+    public Credential update(Credential dto) throws SQLException {
         String sql = "UPDATE credentials " +
                 "SET user_id = ?, site = ?, site_username = ?, site_password = ?, iv = ? " +
                 "WHERE id = ?;";
@@ -98,13 +93,11 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
             return dto;
 
-        } catch (SQLException e) {
-            return null;
         }
     }
 
     @Override
-    public Credential create(Credential dto) {
+    public Credential create(Credential dto) throws SQLException {
         String sql = "INSERT INTO credentials (user_id, site, site_username, site_password, iv) " +
                 "VALUES (?, ?, ?, ?, ?);";
 
@@ -132,21 +125,18 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
             return dto;
 
-        } catch (SQLException e) {
-            return null;
         }
 
     }
 
     @Override
-    public void delete(int id) {
+    public void delete(int id) throws SQLException {
         String sql = "DELETE FROM credentials WHERE id = ?";
         try (Connection connection = getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
 
-        } catch (SQLException e) {
         }
     }
 
