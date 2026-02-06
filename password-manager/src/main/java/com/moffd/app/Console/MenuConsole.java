@@ -1,16 +1,16 @@
 package com.moffd.app.Console;
 
-import com.moffd.app.Models.User;
+import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 
 import java.util.List;
 
 public class MenuConsole {
-    User currentUser;
+    UserSession session;
     IOConsole console;
 
-    public MenuConsole(User currentUser, IOConsole console) {
-        this.currentUser = currentUser;
+    public MenuConsole(UserSession session, IOConsole console) {
+        this.session = session;
         this.console = console;
     }
 
@@ -19,8 +19,8 @@ public class MenuConsole {
                 List.of("credentials", "account", "logout"));
 
         switch (choice) {
-            case "credentials" -> new CredentialConsole(currentUser, console).run();
-            case "account" -> new AccountConsole(currentUser, console).run();
+            case "credentials" -> new CredentialConsole(session, console).run();
+            case "account" -> new AccountConsole(session, console).run();
             case "logout" -> {
             }
         }
