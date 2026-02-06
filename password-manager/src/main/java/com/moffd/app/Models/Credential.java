@@ -6,6 +6,7 @@ public class Credential {
     private String site;
     private String siteUsername;
     private String sitePassword;
+    private byte[] iv;
 
     public Credential(int id, int userId, String site, String siteUsername, String sitePassword) {
         this.id = id;
@@ -13,6 +14,15 @@ public class Credential {
         this.site = site;
         this.siteUsername = siteUsername;
         this.sitePassword = sitePassword;
+    }
+
+    public Credential(int id, int userId, String site, String siteUsername, String sitePassword, byte[] iv) {
+        this.id = id;
+        this.userId = userId;
+        this.site = site;
+        this.siteUsername = siteUsername;
+        this.sitePassword = sitePassword;
+        this.iv = iv;
     }
 
     public int getId() {
@@ -53,5 +63,13 @@ public class Credential {
 
     public void setSitePassword(String sitePassword) {
         this.sitePassword = sitePassword;
+    }
+
+    public byte[] getIv() {
+        return iv;
+    }
+
+    public void setIv(byte[] iv) {
+        this.iv = iv;
     }
 }
