@@ -56,7 +56,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
             statement.setInt(1, user.getId());
 
-            try (ResultSet rs = statement.executeQuery();) {
+            try (ResultSet rs = statement.executeQuery()) {
 
                 while (rs.next()) {
                     output.add(recreateCredential(rs));

@@ -14,6 +14,7 @@ public class UserSession {
     public User getUser() {
         return user;
     }
+
     public SecretKey getEncryptionKey() {
         return encryptionKey;
     }
