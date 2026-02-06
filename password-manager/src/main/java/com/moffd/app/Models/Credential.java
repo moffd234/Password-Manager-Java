@@ -8,14 +8,6 @@ public class Credential {
     private String sitePassword;
     private byte[] iv;
 
-    public Credential(int id, int userId, String site, String siteUsername, String sitePassword) {
-        this.id = id;
-        this.userId = userId;
-        this.site = site;
-        this.siteUsername = siteUsername;
-        this.sitePassword = sitePassword;
-    }
-
     public Credential(int id, int userId, String site, String siteUsername, String sitePassword, byte[] iv) {
         this.id = id;
         this.userId = userId;

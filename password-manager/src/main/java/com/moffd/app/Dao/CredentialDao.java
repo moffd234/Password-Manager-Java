@@ -168,7 +168,8 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
         String site = rs.getString("site");
         String siteUsername = rs.getString("site_username");
         String sitePassword = rs.getString("site_password");
+        byte[] iv = rs.getBytes("iv");
 
-        return new Credential(id, userId, site, siteUsername, sitePassword);
+        return new Credential(id, userId, site, siteUsername, sitePassword, iv);
     }
 }
