@@ -1,10 +1,12 @@
 package com.moffd.app.Models;
 
+import javax.crypto.SecretKey;
+
 public class UserSession {
     private final User user;
-    private final Byte[] encryptionKey;
+    private final SecretKey encryptionKey;
 
-    public UserSession(User user, Byte[] encryptionKey) {
+    public UserSession(User user, SecretKey encryptionKey) {
         this.user = user;
         this.encryptionKey = encryptionKey;
     }
@@ -12,7 +14,7 @@ public class UserSession {
     public User getUser() {
         return user;
     }
-    public Byte[] getEncryptionKey() {
+    public SecretKey getEncryptionKey() {
         return encryptionKey;
     }
 }

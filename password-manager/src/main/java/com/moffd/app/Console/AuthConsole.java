@@ -200,11 +200,11 @@ public class AuthConsole {
         return (salt);
     }
 
-    private static SecretKey getKeyFromPassword(String password, String salt)
+    private static SecretKey getKeyFromPassword(String password, byte[] salt)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
         SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt.getBytes(), 65536, 256);
+        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
 
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
     }
