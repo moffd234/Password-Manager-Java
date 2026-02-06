@@ -4,8 +4,13 @@ import com.moffd.app.Dao.CredentialDao;
 import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 
+import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
+import java.security.InvalidAlgorithmParameterException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Base64;
 
 public class CredentialConsole {
     private final UserSession session;
@@ -25,5 +30,16 @@ public class CredentialConsole {
         byte[] iv = new byte[12];
         new SecureRandom().nextBytes(iv);
         return new GCMParameterSpec(128, iv);
+    }
+
+    private String encrypt(String algorithm, String input, SecretKey key, GCMParameterSpec iv)
+            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
+            IllegalBlockSizeException, BadPaddingException {
+
+        Cipher cipher = Cipher.getInstance(algorithm);
+        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+        byte[] cipherText = cipher.doFinal(input.getBytes());
+
+        return Base64.getEncoder().encodeToString(cipherText);
     }
 }
