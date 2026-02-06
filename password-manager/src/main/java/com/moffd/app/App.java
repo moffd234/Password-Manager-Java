@@ -2,7 +2,7 @@ package com.moffd.app;
 
 import com.moffd.app.Console.AuthConsole;
 import com.moffd.app.Console.MenuConsole;
-import com.moffd.app.Models.User;
+import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 
 /**
@@ -14,10 +14,10 @@ public class App {
         AuthConsole authConsole = new AuthConsole(console);
 
         while (true) {
-            User user = authConsole.authenticate();
+            UserSession session = authConsole.authenticate();
 
-            if (user != null) {
-                new MenuConsole(user, console).run();
+            if (session != null) {
+                new MenuConsole(session, console).run();
             }
         }
     }
