@@ -10,8 +10,6 @@ import java.util.List;
 
 public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
-    private final IOConsole console = new IOConsole();
-
     @Override
     public Credential findById(int id) {
         String sql = "SELECT * FROM credentials WHERE id = ?";
@@ -29,7 +27,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
 
             }
         } catch (SQLException e) {
-            console.printError("Error getting credential by ID " + e);
+            return null;
         }
         return null;
     }
@@ -50,10 +48,8 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             return output;
 
         } catch (SQLException e) {
-            console.printError("Error getting all credentials " + e);
+            return output;
         }
-
-        return output;
     }
 
     public List<Credential> findAllForUser(User user) throws SQLException {
@@ -97,16 +93,14 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             int linesChanged = statement.executeUpdate();
 
             if (linesChanged == 0) {
-                console.printError("Error updating credential. No changes made");
                 return null;
             }
 
             return dto;
 
         } catch (SQLException e) {
-            console.printError("Error updating credential");
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -126,7 +120,6 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             int linesChanged = statement.executeUpdate();
 
             if (linesChanged == 0) {
-                console.printError("Error inserting credential. No credential inserted");
                 return null;
             }
 
@@ -134,16 +127,15 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
             if (rs.next()) {
                 dto.setId(rs.getInt(1));
             } else {
-                console.printError("Error setting credential ID");
+                return null;
             }
 
             return dto;
 
         } catch (SQLException e) {
-            console.printError("Error inserting credential " + e);
+            return null;
         }
 
-        return null;
     }
 
     @Override
@@ -153,14 +145,8 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
-            int rowsModified = statement.executeUpdate();
-
-            if (rowsModified == 0) {
-                console.printError("Error deleting credential. Id not found");
-            }
 
         } catch (SQLException e) {
-            console.printError("Error deleting credential: " + e);
         }
     }
 
