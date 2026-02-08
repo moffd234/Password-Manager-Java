@@ -1,20 +1,11 @@
 package com.moffd.app;
 
-import com.moffd.app.Console.AuthConsole;
-import com.moffd.app.Utils.IOConsole;
-import org.junit.Before;
 import org.junit.Test;
 
 import static com.moffd.app.Utils.InputValidator.validateEmail;
 import static org.junit.Assert.*;
 
-public class AuthConsoleTest {
-    private AuthConsole authConsole;
-
-    @Before
-    public void setup(){
-        authConsole = new AuthConsole(new IOConsole());
-    }
+public class InputValidatorTest {
 
     @Test
     public void testValidateEmailCorrectDotCom(){
