@@ -115,6 +115,12 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
         }
     }
 
+    /**
+     * Recreates a {@link User} from the current row of a result set.
+     * @param rs A {@link ResultSet} from the user table
+     * @return Returns the recreated {@link User} object
+     * @throws SQLException if db error occurs or column is missing
+     */
     private User recreateUser(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String username = rs.getString("username");
