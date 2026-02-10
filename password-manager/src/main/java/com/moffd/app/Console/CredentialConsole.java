@@ -14,6 +14,9 @@ import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+
+import static com.moffd.app.Utils.RequireInput.requireField;
 
 public class CredentialConsole {
     private final UserSession session;
@@ -33,7 +36,7 @@ public class CredentialConsole {
         try {
             List<Credential> credentials = credentialDao.findAllForUser(session.getUser());
 
-            if(credentials.isEmpty()){
+            if (credentials.isEmpty()) {
                 console.printError("No credentials found");
             }
 
@@ -48,27 +51,33 @@ public class CredentialConsole {
         }
     }
 
-    private GCMParameterSpec generateIv() {
+    private byte[] generateIv() {
         byte[] iv = new byte[12];
         new SecureRandom().nextBytes(iv);
-        return new GCMParameterSpec(128, iv);
+        return iv;
     }
 
-    private String encrypt(String algorithm, String input, SecretKey key, GCMParameterSpec iv)
+    private String encrypt(String algorithm, String input, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
 
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
         Cipher cipher = Cipher.getInstance(algorithm);
-        cipher.init(Cipher.ENCRYPT_MODE, key, iv);
+
+        cipher.init(Cipher.ENCRYPT_MODE, key, gcmParameterSpec);
         byte[] cipherText = cipher.doFinal(input.getBytes());
 
         return Base64.getEncoder().encodeToString(cipherText);
     }
 
-    private String decrypt(String algo, String cipherText, SecretKey key, GCMParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+    private String decrypt(String algo, String cipherText, SecretKey key, byte[] iv)
+            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
+            IllegalBlockSizeException, BadPaddingException {
 
+        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
         Cipher cipher = Cipher.getInstance(algo);
-        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+
+        cipher.init(Cipher.DECRYPT_MODE, key, gcmParameterSpec);
         byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
 
         return new String(plainText);
