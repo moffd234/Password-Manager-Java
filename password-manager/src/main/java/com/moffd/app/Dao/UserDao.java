@@ -35,6 +35,21 @@ public class UserDao extends BaseDao implements DaoInterface<User> {
         }
     }
 
+    public User findByEmail(String email) throws SQLException {
+        String sql = "SELECT * FROM users WHERE email = ?";
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, email);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                return rs.next() ? recreateUser(rs) : null;
+            }
+
+        }
+    }
+
     @Override
     public List<User> findAll() throws SQLException {
         ArrayList<User> output = new ArrayList<>();
