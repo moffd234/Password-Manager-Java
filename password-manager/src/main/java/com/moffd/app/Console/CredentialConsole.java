@@ -14,9 +14,6 @@ import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
-import java.util.concurrent.CancellationException;
-
-import static com.moffd.app.Utils.RequireInput.requireField;
 
 public class CredentialConsole {
     private final UserSession session;
@@ -57,12 +54,12 @@ public class CredentialConsole {
         return iv;
     }
 
-    private String encrypt(String algorithm, String input, SecretKey key, byte[] iv)
+    private String encrypt(String input, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
 
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
-        Cipher cipher = Cipher.getInstance(algorithm);
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
         cipher.init(Cipher.ENCRYPT_MODE, key, gcmParameterSpec);
         byte[] cipherText = cipher.doFinal(input.getBytes());
@@ -70,12 +67,12 @@ public class CredentialConsole {
         return Base64.getEncoder().encodeToString(cipherText);
     }
 
-    private String decrypt(String algo, String cipherText, SecretKey key, byte[] iv)
+    private String decrypt(String cipherText, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
 
         GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
-        Cipher cipher = Cipher.getInstance(algo);
+        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
         cipher.init(Cipher.DECRYPT_MODE, key, gcmParameterSpec);
         byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
