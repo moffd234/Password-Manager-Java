@@ -194,14 +194,12 @@ public class AuthConsole {
                     return email;
                 }
 
-                ioConsole.printError("Username is already taken");
+                ioConsole.printError("email is already taken");
 
             } catch (SQLException e) {
-                ioConsole.printError("Issue creating username. Please try again late");
+                ioConsole.printError("Issue creating email. Please try again late");
                 return null;
             }
-
-            return email;
         }
     }
 
