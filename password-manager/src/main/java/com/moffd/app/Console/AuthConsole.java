@@ -20,6 +20,7 @@ import java.util.concurrent.CancellationException;
 
 import static com.moffd.app.Utils.InputValidator.validateEmail;
 import static com.moffd.app.Utils.InputValidator.validatePassword;
+import static com.moffd.app.Utils.RequireInput.requireField;
 import static java.lang.System.exit;
 
 public class AuthConsole {
@@ -195,14 +196,6 @@ public class AuthConsole {
         }
     }
 
-    private String requireField(String input) throws CancellationException {
-
-        if (input == null || input.equalsIgnoreCase("back")) {
-            throw new CancellationException();
-        }
-
-        return input;
-    }
 
     private byte[] getSalt() {
         byte[] salt = new byte[16];
