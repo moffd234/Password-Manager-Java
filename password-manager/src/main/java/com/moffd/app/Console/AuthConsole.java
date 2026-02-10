@@ -190,7 +190,7 @@ public class AuthConsole {
             }
 
             try {
-                if (userDao.findByUsername(email) == null) {
+                if (userDao.findByEmail(email) == null) {
                     return email;
                 }
 
