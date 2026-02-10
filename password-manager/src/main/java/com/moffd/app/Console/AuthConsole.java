@@ -189,6 +189,18 @@ public class AuthConsole {
                 continue;
             }
 
+            try {
+                if (userDao.findByUsername(email) == null) {
+                    return email;
+                }
+
+                ioConsole.printError("Username is already taken");
+
+            } catch (SQLException e) {
+                ioConsole.printError("Issue creating username. Please try again late");
+                return null;
+            }
+
             return email;
         }
     }
