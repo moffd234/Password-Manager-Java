@@ -42,4 +42,13 @@ public class CredentialConsole {
 
         return Base64.getEncoder().encodeToString(cipherText);
     }
+
+    private String decrypt(String algo, String cipherText, SecretKey key, GCMParameterSpec iv) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+
+        Cipher cipher = Cipher.getInstance(algo);
+        cipher.init(Cipher.DECRYPT_MODE, key, iv);
+        byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
+
+        return new String(plainText);
+    }
 }
