@@ -21,7 +21,6 @@ import java.util.concurrent.CancellationException;
 import static com.moffd.app.Utils.InputValidator.validateEmail;
 import static com.moffd.app.Utils.InputValidator.validatePassword;
 import static com.moffd.app.Utils.RequireInput.requireField;
-import static java.lang.System.exit;
 
 public class AuthConsole {
     private final IOConsole ioConsole;
@@ -51,8 +50,6 @@ public class AuthConsole {
                 session = login();
             } else if (loginChoice.equals("signup")) {
                 session = signUp();
-            } else {
-                exit(0);
             }
         }
 
