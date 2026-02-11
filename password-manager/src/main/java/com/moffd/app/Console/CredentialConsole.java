@@ -87,6 +87,9 @@ public class CredentialConsole {
                 for (Credential cred : matchingCreds) {
                     credentialDao.delete(cred.getId());
                 }
+
+                console.printlnColored("Successfully deleted credentials", AnsiColor.GREEN);
+
             } else {
                 for (Credential cred : matchingCreds) {
 
