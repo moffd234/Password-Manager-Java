@@ -67,6 +67,13 @@ public class CredentialConsole {
         }
     }
 
+    private void deleteCredential(){
+        String siteName = requireField(console.getStringInput("Enter site the credential is tied to"));
+        String username = requireField(console.getStringInput("Enter username for credential"));
+
+
+    }
+
     private CredentialInfo getCredentialInfo() {
         while (true) {
             try {

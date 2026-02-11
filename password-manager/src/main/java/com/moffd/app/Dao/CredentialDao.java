@@ -69,6 +69,28 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
         return output;
     }
 
+    public List<Credential> findBySiteAndUsername(int userId, String site, String username) throws SQLException{
+        String sql = "SELECT * FROM credentials WHERE user_id = ?, site = ? AND site_username = ?";
+        List<Credential> output = new ArrayList<>();
+
+        try (Connection connection = getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setInt(1, userId);
+            statement.setString(2, site);
+            statement.setString(3, username);
+
+            try(ResultSet rs = statement.executeQuery()){
+                while(rs.next()){
+                    output.add(recreateCredential(rs));
+                }
+            }
+
+        }
+
+        return output;
+    }
+
     @Override
     public Credential update(Credential dto) throws SQLException {
         String sql = "UPDATE credentials " +
