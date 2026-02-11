@@ -33,17 +33,17 @@ public class CredentialConsole {
     public void run() {
     }
 
-    private Credential insertNewCredential(){
+    private Credential insertNewCredential() {
         Credential cred = getCredential();
 
-        if(cred == null){
+        if (cred == null) {
             return null;
         }
 
         try {
             return credentialDao.create(cred);
         } catch (SQLException e) {
-            console.printError("Error creating credential for site " + cred.getSite() );
+            console.printError("Error creating credential for site " + cred.getSite());
             return null;
         }
     }
@@ -67,11 +67,50 @@ public class CredentialConsole {
         }
     }
 
-    private void deleteCredential(){
+    private void deleteCredential() {
         String siteName = requireField(console.getStringInput("Enter site the credential is tied to"));
         String username = requireField(console.getStringInput("Enter username for credential"));
 
+        try {
+            List<Credential> matchingCreds = credentialDao.findBySiteAndUsername(session.getUser().getId(), siteName, username);
 
+            if (matchingCreds.isEmpty()) {
+                console.println("No matching credentials found.");
+                return;
+            }
+
+            boolean deleteAll = console.getYesNoInput(matchingCreds.size() +
+                    " matching credentials found. Would you like to delete all of them?");
+
+            if (deleteAll) {
+                for (Credential cred : matchingCreds) {
+                    credentialDao.delete(cred.getId());
+                }
+            } else {
+                for (Credential cred : matchingCreds) {
+
+                    console.println("Site: " + cred.getSite());
+                    console.println("Username: " + cred.getSiteUsername());
+                    console.println("Password: " + decrypt(cred.getSitePassword(), session.getEncryptionKey(), cred.getIv()));
+                    boolean deleteCred = console.getYesNoInput("Delete this credential?");
+
+                    if (deleteCred) {
+                        deleteIndividualCred(cred);
+                    }
+                }
+            }
+
+
+        } catch (SQLException e) {
+            console.printError("Issue handling credentials. Please try again later");
+        } catch (InvalidAlgorithmParameterException | NoSuchAlgorithmException | BadPaddingException |
+                 InvalidKeyException | NoSuchPaddingException | IllegalBlockSizeException e) {
+            console.printError("Issue decrypting password. Please try again later");
+        }
+
+    }
+
+    private void deleteIndividualCred(Credential cred) {
     }
 
     private CredentialInfo getCredentialInfo() {
