@@ -75,6 +75,25 @@ public class CredentialConsole {
         }
     }
 
+    private Credential getCredential() {
+        CredentialInfo credentialInfo = getCredentialInfo();
+
+        if (credentialInfo == null) {
+            return null;
+        }
+
+        try {
+            byte[] iv = generateIv();
+            String encrypted = encrypt(credentialInfo.password(), session.getEncryptionKey(), iv);
+            return new Credential(0, session.getUser().getId(), credentialInfo.site(), credentialInfo.username(), encrypted, iv);
+
+        } catch (InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException |
+                 IllegalBlockSizeException | NoSuchAlgorithmException | BadPaddingException e) {
+
+            console.printError("Error creating credential please try again later");
+            return null;
+        }
+    }
 
     private String getConfirmedPassword() throws CancellationException {
         String password = requireField(console.getStringInput("Please enter password"));
