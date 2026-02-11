@@ -2,6 +2,7 @@ package com.moffd.app.Console;
 
 import com.moffd.app.Dao.CredentialDao;
 import com.moffd.app.Models.Credential;
+import com.moffd.app.Models.CredentialInfo;
 import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.IOConsole;
 
@@ -50,6 +51,30 @@ public class CredentialConsole {
             console.printError("Error fetching all credentials");
         }
     }
+
+    private CredentialInfo getCredentialInfo() {
+        while (true) {
+            try {
+                String username = requireField(console.getStringInput("Please enter username"));
+                String siteName = requireField(console.getStringInput("Please enter name of website / service"));
+                String password = getConfirmedPassword();
+
+                boolean isCorrect = console.getYesNoInput("You entered:\n" +
+                        "Username: " + username +
+                        "\nSite: " + siteName +
+                        "\nIs this correct (y/n)");
+
+                if (isCorrect) {
+                    return new CredentialInfo(siteName, username, password);
+                }
+
+
+            } catch (CancellationException e) {
+                return null;
+            }
+        }
+    }
+
 
     private String getConfirmedPassword() throws CancellationException {
         String password = requireField(console.getStringInput("Please enter password"));
