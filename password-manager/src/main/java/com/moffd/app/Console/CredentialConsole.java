@@ -33,6 +33,21 @@ public class CredentialConsole {
     public void run() {
     }
 
+    private Credential insertNewCredential(){
+        Credential cred = getCredential();
+
+        if(cred == null){
+            return null;
+        }
+
+        try {
+            return credentialDao.create(cred);
+        } catch (SQLException e) {
+            console.printError("Error creating credential for site " + cred.getSite() );
+            return null;
+        }
+    }
+
     private void printCredentialList() {
         try {
             List<Credential> credentials = credentialDao.findAllForUser(session.getUser());
