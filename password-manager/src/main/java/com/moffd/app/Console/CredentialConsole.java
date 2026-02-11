@@ -4,6 +4,7 @@ import com.moffd.app.Dao.CredentialDao;
 import com.moffd.app.Models.Credential;
 import com.moffd.app.Models.CredentialInfo;
 import com.moffd.app.Models.UserSession;
+import com.moffd.app.Utils.AnsiColor;
 import com.moffd.app.Utils.IOConsole;
 
 import javax.crypto.*;
@@ -111,6 +112,14 @@ public class CredentialConsole {
     }
 
     private void deleteIndividualCred(Credential cred) {
+        try{
+            credentialDao.delete(cred.getId());
+            console.printlnColored("Successfully deleted credential", AnsiColor.GREEN);
+        } catch (SQLException e) {
+            console.printError("Error deleting the following credential:" +
+                    "\nSite: " + cred.getSite() +
+                    "\nUsername " + cred.getSiteUsername());
+        }
     }
 
     private CredentialInfo getCredentialInfo() {
