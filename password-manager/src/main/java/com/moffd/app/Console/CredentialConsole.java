@@ -14,6 +14,9 @@ import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.Base64;
 import java.util.List;
+import java.util.concurrent.CancellationException;
+
+import static com.moffd.app.Utils.RequireInput.requireField;
 
 public class CredentialConsole {
     private final UserSession session;
@@ -46,6 +49,19 @@ public class CredentialConsole {
         } catch (SQLException e) {
             console.printError("Error fetching all credentials");
         }
+    }
+
+    private String getConfirmedPassword() throws CancellationException {
+        String password = requireField(console.getStringInput("Please enter password"));
+        String confPassword = requireField(console.getStringInput("Please confirm password"));
+
+        while (!confPassword.equals(password)) {
+            console.printError("Passwords do not match");
+            password = requireField(console.getStringInput("Please enter password"));
+            confPassword = requireField(console.getStringInput("Please confirm password"));
+        }
+
+        return password;
     }
 
     private byte[] generateIv() {
