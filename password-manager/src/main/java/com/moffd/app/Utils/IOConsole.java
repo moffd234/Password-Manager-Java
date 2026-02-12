@@ -67,7 +67,7 @@ public class IOConsole {
 
         if (result.equalsIgnoreCase("yes") || result.equalsIgnoreCase("y")) {
             return true;
-        } else if (prompt.equalsIgnoreCase("no") || prompt.equalsIgnoreCase("n")) {
+        } else if (result.equalsIgnoreCase("no") || result.equalsIgnoreCase("n")) {
             return false;
         }
 
