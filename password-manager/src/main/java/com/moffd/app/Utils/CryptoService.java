@@ -6,6 +6,7 @@ import javax.crypto.*;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.PBEKeySpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.nio.charset.StandardCharsets;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -45,7 +46,7 @@ public class CryptoService {
         Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
 
         cipher.init(Cipher.ENCRYPT_MODE, key, gcmParameterSpec);
-        byte[] cipherText = cipher.doFinal(input.getBytes());
+        byte[] cipherText = cipher.doFinal(input.getBytes(StandardCharsets.UTF_8));
 
         return Base64.getEncoder().encodeToString(cipherText);
     }
@@ -60,7 +61,7 @@ public class CryptoService {
         cipher.init(Cipher.DECRYPT_MODE, key, gcmParameterSpec);
         byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
 
-        return new String(plainText);
+        return new String(plainText, StandardCharsets.UTF_8);
     }
 
     public String hashPassword(String password) {
