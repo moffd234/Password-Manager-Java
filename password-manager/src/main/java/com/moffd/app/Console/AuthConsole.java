@@ -3,17 +3,11 @@ package com.moffd.app.Console;
 import com.moffd.app.Dao.UserDao;
 import com.moffd.app.Models.User;
 import com.moffd.app.Models.UserSession;
+import com.moffd.app.Utils.CryptoService;
 import com.moffd.app.Utils.IOConsole;
-import org.mindrot.jbcrypt.BCrypt;
 
-import javax.crypto.SecretKey;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.KeySpec;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.concurrent.CancellationException;
@@ -24,19 +18,13 @@ import static com.moffd.app.Utils.RequireInput.requireField;
 
 public class AuthConsole {
     private final IOConsole ioConsole;
-    private final UserDao userDao = new UserDao();
+    private final UserDao userDao;
+    private final CryptoService cryptoService;
 
     public AuthConsole(IOConsole ioConsole) {
         this.ioConsole = ioConsole;
-    }
-
-    private static SecretKey getKeyFromPassword(String password, byte[] salt)
-            throws NoSuchAlgorithmException, InvalidKeySpecException {
-
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        KeySpec spec = new PBEKeySpec(password.toCharArray(), salt, 65536, 256);
-
-        return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
+        this.userDao = new UserDao();
+        this.cryptoService = new CryptoService();
     }
 
     public UserSession authenticate() {
@@ -65,12 +53,12 @@ public class AuthConsole {
 
                 User userAccount = userDao.findByUsername(username);
 
-                if (userAccount == null || !checkPassword(password, userAccount.getMasterPassword())) {
+                if (userAccount == null || !cryptoService.checkPassword(password, userAccount.getMasterPassword())) {
                     ioConsole.printError("Incorrect username or password");
                     continue;
                 }
 
-                return new UserSession(userAccount, getKeyFromPassword(password, userAccount.getSalt()));
+                return new UserSession(userAccount, cryptoService.getKeyFromPassword(password, userAccount.getSalt()));
 
             } catch (CancellationException e) {
                 return null;
@@ -90,12 +78,12 @@ public class AuthConsole {
             String password = requireField(getValidPassword());
             String email = requireField(getValidEmail());
 
-            String hashedPassword = hashPassword(password);
-            byte[] salt = getSalt();
+            String hashedPassword = cryptoService.hashPassword(password);
+            byte[] salt = cryptoService.getSalt();
 
             User tempUser = new User(0, username, hashedPassword, email, salt);
 
-            return new UserSession(userDao.create(tempUser), getKeyFromPassword(password, salt));
+            return new UserSession(userDao.create(tempUser), cryptoService.getKeyFromPassword(password, salt));
 
         } catch (CancellationException e) {
             return null;
@@ -103,18 +91,6 @@ public class AuthConsole {
             ioConsole.printError("Issue creating new user.");
             return null;
         }
-    }
-
-    private String hashPassword(String password) {
-        int logRounds = 12;
-
-        String salt = BCrypt.gensalt(logRounds);
-
-        return BCrypt.hashpw(password, salt);
-    }
-
-    private boolean checkPassword(String enteredPwd, String hashedPwd) {
-        return BCrypt.checkpw(enteredPwd, hashedPwd);
     }
 
     private String getValidUsername() {
@@ -201,13 +177,6 @@ public class AuthConsole {
                 return null;
             }
         }
-    }
-
-
-    private byte[] getSalt() {
-        byte[] salt = new byte[16];
-        new SecureRandom().nextBytes(salt);
-        return (salt);
     }
 
 }
