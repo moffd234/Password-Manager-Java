@@ -37,7 +37,7 @@ public class CryptoService {
         return iv;
     }
 
-    private String encrypt(String input, SecretKey key, byte[] iv)
+    public String encrypt(String input, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
 
@@ -50,7 +50,7 @@ public class CryptoService {
         return Base64.getEncoder().encodeToString(cipherText);
     }
 
-    private String decrypt(String cipherText, SecretKey key, byte[] iv)
+    public String decrypt(String cipherText, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
 
@@ -63,7 +63,7 @@ public class CryptoService {
         return new String(plainText);
     }
 
-    private String hashPassword(String password) {
+    public String hashPassword(String password) {
         int logRounds = 12;
 
         String salt = BCrypt.gensalt(logRounds);
@@ -71,7 +71,7 @@ public class CryptoService {
         return BCrypt.hashpw(password, salt);
     }
 
-    private boolean checkPassword(String enteredPwd, String hashedPwd) {
+    public boolean checkPassword(String enteredPwd, String hashedPwd) {
         return BCrypt.checkpw(enteredPwd, hashedPwd);
     }
 
