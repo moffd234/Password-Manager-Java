@@ -70,7 +70,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
     }
 
     public List<Credential> findBySiteAndUsername(int userId, String site, String username) throws SQLException{
-        String sql = "SELECT * FROM credentials WHERE user_id = ?, site = ? AND site_username = ?";
+        String sql = "SELECT * FROM credentials WHERE user_id = ? AND site = ? AND site_username = ?";
         List<Credential> output = new ArrayList<>();
 
         try (Connection connection = getConnection();
