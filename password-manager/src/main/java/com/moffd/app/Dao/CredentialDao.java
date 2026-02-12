@@ -158,7 +158,7 @@ public class CredentialDao extends BaseDao implements DaoInterface<Credential> {
              PreparedStatement statement = connection.prepareStatement(sql)) {
 
             statement.setInt(1, id);
-
+            statement.executeUpdate();
         }
     }
 
