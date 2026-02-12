@@ -5,16 +5,16 @@ import com.moffd.app.Models.Credential;
 import com.moffd.app.Models.CredentialInfo;
 import com.moffd.app.Models.UserSession;
 import com.moffd.app.Utils.AnsiColor;
+import com.moffd.app.Utils.CryptoService;
 import com.moffd.app.Utils.IOConsole;
 
-import javax.crypto.*;
-import javax.crypto.spec.GCMParameterSpec;
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.List;
 import java.util.concurrent.CancellationException;
 
@@ -24,11 +24,13 @@ public class CredentialConsole {
     private final UserSession session;
     private final IOConsole console;
     private final CredentialDao credentialDao;
+    private final CryptoService cryptoService;
 
     public CredentialConsole(UserSession session, IOConsole console) {
         this.session = session;
         this.console = console;
         this.credentialDao = new CredentialDao();
+        this.cryptoService = new CryptoService();
     }
 
     public void run() {
@@ -95,7 +97,7 @@ public class CredentialConsole {
 
                     console.println("Site: " + cred.getSite());
                     console.println("Username: " + cred.getSiteUsername());
-                    console.println("Password: " + decrypt(cred.getSitePassword(), session.getEncryptionKey(), cred.getIv()));
+                    console.println("Password: " + cryptoService.decrypt(cred.getSitePassword(), session.getEncryptionKey(), cred.getIv()));
                     boolean deleteCred = console.getYesNoInput("Delete this credential?");
 
                     if (deleteCred) {
@@ -115,7 +117,7 @@ public class CredentialConsole {
     }
 
     private void deleteIndividualCred(Credential cred) {
-        try{
+        try {
             credentialDao.delete(cred.getId());
             console.printlnColored("Successfully deleted credential", AnsiColor.GREEN);
         } catch (SQLException e) {
@@ -156,8 +158,8 @@ public class CredentialConsole {
         }
 
         try {
-            byte[] iv = generateIv();
-            String encrypted = encrypt(credentialInfo.password(), session.getEncryptionKey(), iv);
+            byte[] iv = cryptoService.generateIv();
+            String encrypted = cryptoService.encrypt(credentialInfo.password(), session.getEncryptionKey(), iv);
             return new Credential(0, session.getUser().getId(), credentialInfo.site(), credentialInfo.username(), encrypted, iv);
 
         } catch (InvalidAlgorithmParameterException | InvalidKeyException | NoSuchPaddingException |
@@ -179,37 +181,5 @@ public class CredentialConsole {
         }
 
         return password;
-    }
-
-    private byte[] generateIv() {
-        byte[] iv = new byte[12];
-        new SecureRandom().nextBytes(iv);
-        return iv;
-    }
-
-    private String encrypt(String input, SecretKey key, byte[] iv)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException {
-
-        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-
-        cipher.init(Cipher.ENCRYPT_MODE, key, gcmParameterSpec);
-        byte[] cipherText = cipher.doFinal(input.getBytes());
-
-        return Base64.getEncoder().encodeToString(cipherText);
-    }
-
-    private String decrypt(String cipherText, SecretKey key, byte[] iv)
-            throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
-            IllegalBlockSizeException, BadPaddingException {
-
-        GCMParameterSpec gcmParameterSpec = new GCMParameterSpec(128, iv);
-        Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-
-        cipher.init(Cipher.DECRYPT_MODE, key, gcmParameterSpec);
-        byte[] plainText = cipher.doFinal(Base64.getDecoder().decode(cipherText));
-
-        return new String(plainText);
     }
 }
