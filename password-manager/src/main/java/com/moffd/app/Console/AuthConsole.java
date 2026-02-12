@@ -79,7 +79,7 @@ public class AuthConsole {
             String email = requireField(getValidEmail());
 
             String hashedPassword = cryptoService.hashPassword(password);
-            byte[] salt = cryptoService.getSalt();
+            byte[] salt = cryptoService.generateSalt();
 
             User tempUser = new User(0, username, hashedPassword, email, salt);
 

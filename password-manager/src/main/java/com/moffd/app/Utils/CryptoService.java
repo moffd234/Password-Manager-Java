@@ -26,7 +26,7 @@ public class CryptoService {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
     }
 
-    public byte[] getSalt() {
+    public byte[] generateSalt() {
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
         return (salt);
