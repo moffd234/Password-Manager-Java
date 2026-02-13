@@ -38,6 +38,14 @@ public class CryptoService {
         return iv;
     }
 
+    /**
+     * Takes a plaintext input and returns an encrypted output using AES in GCM mode with no padding
+     *
+     * @param input The plaintext string to encrypt
+     * @param key The user's {@link SecretKey}
+     * @param iv The credential's unique initialization vector
+     * @return The Base64 encoded cipherText
+     */
     public String encrypt(String input, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
@@ -51,6 +59,13 @@ public class CryptoService {
         return Base64.getEncoder().encodeToString(cipherText);
     }
 
+    /**
+     * Decrypts a Base64 encoded cipherText using AES in GCM mode with no padding
+     *
+     * @param cipherText The encrypted cipherText to decrypt
+     * @param key The user's {@link SecretKey}
+     * @param iv The credential's unique initialization value
+     */
     public String decrypt(String cipherText, SecretKey key, byte[] iv)
             throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeyException,
             IllegalBlockSizeException, BadPaddingException {
