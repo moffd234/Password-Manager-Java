@@ -32,6 +32,10 @@ public class CryptoService {
         return (salt);
     }
 
+    /**
+     * Generates a secure random 12 byte initialization vector
+     * @return a random 12 byte array representing an initialization vector
+     */
     public byte[] generateIv() {
         byte[] iv = new byte[12];
         new SecureRandom().nextBytes(iv);
