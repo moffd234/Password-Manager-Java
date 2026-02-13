@@ -26,10 +26,14 @@ public class CryptoService {
         return new SecretKeySpec(factory.generateSecret(spec).getEncoded(), "AES");
     }
 
+    /**
+     * Generates a secure random 16 byte salt
+     * @return a secure random 16 byte salt
+     */
     public byte[] generateSalt() {
         byte[] salt = new byte[16];
         new SecureRandom().nextBytes(salt);
-        return (salt);
+        return salt;
     }
 
     /**
