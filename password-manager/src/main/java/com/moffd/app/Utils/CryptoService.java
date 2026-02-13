@@ -17,6 +17,14 @@ import java.util.Base64;
 
 public class CryptoService {
 
+    /**
+     * Generates am AES {@link SecretKey} based on a user's password and salt using PBKDF2
+     * @param password User's plaintext password
+     * @param salt a secure random salt
+     * @return an AES {@link SecretKey} derived from the user's password and salt
+     * @throws NoSuchAlgorithmException if PBKDF2WithHmacSHA256 is not available
+     * @throws InvalidKeySpecException if the key spec is invalid
+     */
     public SecretKey getKeyFromPassword(String password, byte[] salt)
             throws NoSuchAlgorithmException, InvalidKeySpecException {
 
