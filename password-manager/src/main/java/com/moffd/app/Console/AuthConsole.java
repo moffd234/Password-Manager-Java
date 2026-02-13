@@ -27,6 +27,11 @@ public class AuthConsole {
         this.cryptoService = new CryptoService();
     }
 
+    /**
+     * Runs main authentication loop prompting the user to login or signup. The method will keep prompting until
+     * a valid {@link UserSession} is returned. Note: User can also type 'exit' at any time to exit application.
+     * @return a new {@link UserSession} containing the created user and their secret key
+     */
     public UserSession authenticate() {
         UserSession session = null;
 
