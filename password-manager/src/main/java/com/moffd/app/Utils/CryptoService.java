@@ -79,6 +79,11 @@ public class CryptoService {
         return new String(plainText, StandardCharsets.UTF_8);
     }
 
+    /**
+     * Hashes a plaintext password using Bcrypt with 12 cost factor
+     * @param password The plaintext password to hash
+     * @return The hashed password
+     */
     public String hashPassword(String password) {
         int logRounds = 12;
 
@@ -87,6 +92,12 @@ public class CryptoService {
         return BCrypt.hashpw(password, salt);
     }
 
+    /**
+     * Checks if a given password against a stored Bcrypt hash
+     * @param enteredPwd The plaintext password the user inputted
+     * @param hashedPwd The stored Bcrypt hash
+     * @return True if the password matches. False otherwise.
+     */
     public boolean checkPassword(String enteredPwd, String hashedPwd) {
         return BCrypt.checkpw(enteredPwd, hashedPwd);
     }
