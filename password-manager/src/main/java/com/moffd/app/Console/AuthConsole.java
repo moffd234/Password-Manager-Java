@@ -98,10 +98,16 @@ public class AuthConsole {
         }
     }
 
+    /**
+     * Prompts user for a non-empty and unique username. The method will continue to prompt the
+     * user until a valid input is received or the user types back to cancel.
+     *
+     * @return a username string if a valid username is entered. Otherwise, null if a SQLException is thrown or user
+     * types 'back'.
+     */
     private String getValidUsername() {
         while (true) {
             String username = requireField(ioConsole.getStringInput("Please create a username").trim());
-
 
             if (username.isEmpty()) {
                 ioConsole.printError("Username cannot be empty");
