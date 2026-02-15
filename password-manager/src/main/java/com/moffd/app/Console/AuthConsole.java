@@ -160,6 +160,15 @@ public class AuthConsole {
         }
     }
 
+    /**
+     * Prompts user for a valid and unique email address. The method will continue to prompt the
+     * user until a valid input is received or the user types back to cancel.
+     *
+     * <p>For valid email requirements see {@link com.moffd.app.Utils.InputValidator#validateEmail(String)}</p>
+     *
+     * @return an email string if a valid email is entered. Otherwise, null if a SQLException is thrown or user
+     * types 'back'.
+     */
     private String getValidEmail() {
         while (true) {
             String email = requireField(ioConsole.getStringInput("Please create an email ").trim());
@@ -179,6 +188,8 @@ public class AuthConsole {
 
             } catch (SQLException e) {
                 ioConsole.printError("Issue creating email. Please try again late");
+                return null;
+            } catch (CancellationException e) {
                 return null;
             }
         }
