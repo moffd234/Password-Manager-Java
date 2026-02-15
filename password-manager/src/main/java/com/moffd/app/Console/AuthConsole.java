@@ -100,11 +100,8 @@ public class AuthConsole {
 
     private String getValidUsername() {
         while (true) {
-            String username = ioConsole.getStringInput("Please create a username").trim();
+            String username = requireField(ioConsole.getStringInput("Please create a username").trim());
 
-            if (username.equalsIgnoreCase("back")) {
-                return null;
-            }
 
             if (username.isEmpty()) {
                 ioConsole.printError("Username cannot be empty");
@@ -120,6 +117,8 @@ public class AuthConsole {
 
             } catch (SQLException e) {
                 ioConsole.printError("Issue creating username. Please try again late");
+                return null;
+            } catch (CancellationException e){
                 return null;
             }
         }
