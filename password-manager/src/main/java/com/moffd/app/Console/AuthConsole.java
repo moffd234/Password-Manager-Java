@@ -83,6 +83,14 @@ public class AuthConsole {
         return null;
     }
 
+    /**
+     * Prompts user to create new login info. If account creation is successful a new {@link User} is created with a
+     * hashed password and written to the db. After a user is created a new {@link UserSession} is created with the user
+     * and a key derived from the password.
+     *
+     * @return a {@link UserSession} if account creation is successful. Otherwise, null if a SQLException is thrown or
+     * user types back to cancel
+     */
     private UserSession signUp() {
 
         try {
