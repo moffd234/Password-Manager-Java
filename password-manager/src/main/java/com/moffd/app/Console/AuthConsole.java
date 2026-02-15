@@ -130,6 +130,13 @@ public class AuthConsole {
         }
     }
 
+    /**
+     * Prompts user for a valid password then will prompt to confirm the password. The method will continue to prompt the
+     * user until a valid input is received or the user types back to cancel.
+     *
+     * <p>For valid password requirements see {@link com.moffd.app.Utils.InputValidator#validatePassword(String)}</p>
+     * @return a password string if a valid password is entered. Otherwise, null if the user types back
+     */
     private String getValidPassword() {
         while (true) {
             try {
