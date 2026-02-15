@@ -132,31 +132,27 @@ public class AuthConsole {
 
     private String getValidPassword() {
         while (true) {
-            String password = ioConsole.getStringInput("Please create a password ");
+            try {
+                String password = requireField(ioConsole.getStringInput("Please create a password "));
+                String message = validatePassword(password);
 
-            if (password.equalsIgnoreCase("back")) {
+                if (message != null) {
+                    ioConsole.printError(message);
+                    continue;
+                }
+
+                String confirmation = requireField(ioConsole.getStringInput("Confirm your password"));
+
+                if (!confirmation.equals(password)) {
+                    ioConsole.printError("Passwords do not match");
+                    continue;
+                }
+
+                return password;
+
+            } catch (CancellationException e){
                 return null;
             }
-
-            String message = validatePassword(password);
-
-            if (message != null) {
-                ioConsole.printError(message);
-                continue;
-            }
-
-            String confirmation = ioConsole.getStringInput("Confirm your password");
-
-            if (confirmation.equalsIgnoreCase("back")) {
-                return null;
-            }
-
-            if (!confirmation.equals(password)) {
-                ioConsole.printError("Passwords do not match");
-                continue;
-            }
-
-            return password;
         }
     }
 
