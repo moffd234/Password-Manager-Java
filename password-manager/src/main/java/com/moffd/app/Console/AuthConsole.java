@@ -162,12 +162,7 @@ public class AuthConsole {
 
     private String getValidEmail() {
         while (true) {
-            String email = ioConsole.getStringInput("Please create an email ").trim();
-
-            if (email.equalsIgnoreCase("back")) {
-                return null;
-            }
-
+            String email = requireField(ioConsole.getStringInput("Please create an email ").trim());
             String message = validateEmail(email);
 
             if (message != null) {
