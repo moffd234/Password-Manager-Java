@@ -49,6 +49,13 @@ public class AuthConsole {
         return session;
     }
 
+    /**
+     * Prompts user for login credentials and attempts to use the credentials to log in a pre-existing account. If the
+     * user enters incorrect credentials 5 times the loop is exited and null is returned. Otherwise, a new
+     * {@link UserSession} is returned.
+     * @return A new UserSession if valid account details are entered. Otherwise, null if an exception is thrown or incorrect
+     * user information is entered more than 5 times.
+     */
     private UserSession login() {
         for (int i = 0; i < 5; i++) {
 
