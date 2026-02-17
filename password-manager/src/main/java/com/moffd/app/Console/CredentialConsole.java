@@ -178,6 +178,11 @@ public class CredentialConsole {
         }
     }
 
+    /**
+     * Gets credential info from the user then creates a new {@link Credential} with an encrypted password.
+     * @return a new {@link Credential} object created from the user input, the iv, and the encrypted password if
+     * creation was successful. Otherwise, null if the user cancels the input or encryption fails.
+     */
     private Credential getCredential() {
         CredentialInfo credentialInfo = getCredentialInfo();
 
