@@ -70,6 +70,11 @@ public class CredentialConsole {
         }
     }
 
+    /**
+     * Prompts user for the siteName and username of a credential to delete.
+     * <p>If no credentials are found then a 'no matching credentials' message is printed. Otherwise, the user is
+     * prompted to delete all found credentials or review each credential before deciding to delete the credentials</p>
+     */
     private void deleteCredentials() {
         String siteName = requireField(console.getStringInput("Enter site the credential is tied to"));
         String username = requireField(console.getStringInput("Enter username for credential"));
