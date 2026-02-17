@@ -203,6 +203,12 @@ public class CredentialConsole {
         }
     }
 
+    /**
+     * Prompts the user to enter a password then confirm the password. This loop is repeated until these two inputs
+     * match (case-sensitive) or a CancellationException is thrown.
+     * @return The confirmed password string.
+     * @throws CancellationException if user types back or null input is received
+     */
     private String getConfirmedPassword() throws CancellationException {
         String password = requireField(console.getStringInput("Please enter password"));
         String confPassword = requireField(console.getStringInput("Please confirm password"));
