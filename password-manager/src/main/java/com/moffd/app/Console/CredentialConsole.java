@@ -39,7 +39,7 @@ public class CredentialConsole {
     /**
      * Gets new credential information and writes the credential to the database. If an SQLException is caught a message
      * is printed stating there was an error creating the credential.
-     * @return The credential object returned after writing to the database.
+     * @return The {@link Credential} object returned after writing to the database.
      */
     private Credential insertNewCredential() {
         Credential cred = getCredential();
@@ -132,6 +132,12 @@ public class CredentialConsole {
 
     }
 
+    /**
+     * Attempts to find and delete a given credential from the credential table. If a credential is not found or there
+     * another SQLException occurs then an error message is printed to the console.
+     *
+     * @param cred a {@link Credential} object to find and delete.
+     */
     private void deleteIndividualCred(Credential cred) {
         try {
             credentialDao.delete(cred.getId());
