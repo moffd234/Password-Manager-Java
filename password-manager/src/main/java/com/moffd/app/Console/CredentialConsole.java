@@ -51,6 +51,10 @@ public class CredentialConsole {
         }
     }
 
+    /**
+     * Prints a list of all saved credentials by the siteName and userName. If no credentials are found or there is
+     * an error getting credentials a message stating so is printed.
+     */
     private void printCredentialList() {
         try {
             List<Credential> credentials = credentialDao.findAllForUser(session.getUser());
