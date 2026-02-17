@@ -36,6 +36,11 @@ public class CredentialConsole {
     public void run() {
     }
 
+    /**
+     * Gets new credential information and writes the credential to the database. If an SQLException is caught a message
+     * is printed stating there was an error creating the credential.
+     * @return The credential object returned after writing to the database.
+     */
     private Credential insertNewCredential() {
         Credential cred = getCredential();
 
