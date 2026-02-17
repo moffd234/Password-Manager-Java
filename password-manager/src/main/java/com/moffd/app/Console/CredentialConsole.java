@@ -149,6 +149,12 @@ public class CredentialConsole {
         }
     }
 
+    /**
+     * Gets username, siteName, and password from the user to create a new {@link CredentialInfo} object. If the user
+     * cancels the input null is thrown instead.
+     * @return a new {@link CredentialInfo} if valid credentials were received. Otherwise, returns null if the user
+     * cancels.
+     */
     private CredentialInfo getCredentialInfo() {
         while (true) {
             try {
